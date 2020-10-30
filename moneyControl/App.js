@@ -1,12 +1,12 @@
 import React from 'react';
 import {ImageBackground, StyleSheet, Text, View} from 'react-native';
 
-import Start from './screens/start';
+import Initial from './screens/initial';
 
 const App = () => {
   return (
     <View>
-      <Start></Start>
+      <Initial></Initial>
     </View>
   );
 };
