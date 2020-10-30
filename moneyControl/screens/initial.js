@@ -7,8 +7,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-const image = {uri: 'https://reactjs.org/logo-og.png'};
-
 const Initial = () => (
   <View style={styles.container}>
     <ImageBackground

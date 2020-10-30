@@ -1,13 +1,22 @@
 import React from 'react';
-import {ImageBackground, StyleSheet, Text, View} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 
 import Initial from './screens/initial';
 
+const Stack = createStackNavigator();
+
 const App = () => {
   return (
-    <View>
-      <Initial></Initial>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Initial">
+        <Stack.Screen
+          name="Initial"
+          component={Initial}
+          options={{headerShown: false}}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
