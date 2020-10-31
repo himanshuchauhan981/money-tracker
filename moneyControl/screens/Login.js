@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  ImageBackground,
   StyleSheet,
   Text,
   View,
@@ -9,7 +8,6 @@ import {
   Dimensions,
 } from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
-import {TypingAnimation} from 'react-native-typing-animation';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
 import * as Animatable from 'react-native-animatable';
@@ -18,29 +16,54 @@ class Login extends React.Component {
   constructor() {
     super();
     this.state = {
+      email: {value: '', error: ''},
+      password: {value: '', error: ''},
       animation_login: new Animated.Value(width - 40),
       enable: true,
     };
   }
 
   _animation() {
-    Animated.timing(this.state.animation_login, {
-      toValue: 40,
-      duration: 240,
-      useNativeDriver: false,
-    }).start();
+    let validateState = this.validateFields();
+    if (!validateState) {
+      Animated.timing(this.state.animation_login, {
+        toValue: 40,
+        duration: 240,
+        useNativeDriver: false,
+      }).start();
 
-    setTimeout(() => {
-      this.setState({
-        enable: false,
-        typing_email: false,
-        typing_password: false,
-      });
-    }, 150);
+      setTimeout(() => {
+        this.setState({
+          enable: false,
+        });
+      }, 150);
+    }
   }
+
+  onTextChange = (key, value) => {
+    this.setState({
+      [key]: value,
+    });
+  };
+
+  validateFields = () => {
+    let error = false;
+    let {email, password} = this.state;
+    if (email.value === '') email.error = 'Required field';
+    else email.error = '';
+    if (password.value === '') password.error = 'Required field';
+    else password.error = '';
+
+    if (email.error !== '' || password.error !== '') {
+      error = true;
+    }
+    this.setState({email, password});
+    return error;
+  };
 
   render() {
     const width = this.state.animation_login;
+    const {email, password} = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -51,26 +74,40 @@ class Login extends React.Component {
         <View style={styles.footer}>
           <View style={[styles.text_container, {marginBottom: 20}]}>
             <View style={styles.text_box}>
-              <FontistoIcon name="email" size={30} color="#93278f" />
-              <View style={styles.textBox}>
-                <TextInput
-                  placeholder="Email Address"
-                  style={{marginLeft: 10}}
-                />
-              </View>
+              <FontistoIcon
+                name="email"
+                size={30}
+                color="#93278f"
+                style={{alignSelf: 'center'}}
+              />
+              <TextInput
+                placeholder="Email Address"
+                style={{marginLeft: 10, flexGrow: 1}}
+                onChangeText={(text) => this.onTextChange('email', text)}
+              />
             </View>
-            <Text style={styles.error_message}>* Required field</Text>
+            {email.error ? (
+              <Text style={styles.error_message}>* {email.error}</Text>
+            ) : null}
           </View>
           <View style={styles.text_container}>
             <View style={styles.text_box}>
-              <FontistoIcon name="email" size={30} color="#93278f" />
+              <FontistoIcon
+                name="email"
+                size={30}
+                color="#93278f"
+                style={{alignSelf: 'center'}}
+              />
               <TextInput
                 secureTextEntry
                 placeholder="Password"
-                style={{marginLeft: 10}}
+                style={{marginLeft: 10, flexGrow: 1}}
+                onChangeText={(text) => this.onTextChange('password', text)}
               />
             </View>
-            <Text style={styles.error_message}>* Required field</Text>
+            {password.error ? (
+              <Text style={styles.error_message}>* Required field</Text>
+            ) : null}
           </View>
 
           <TouchableOpacity onPress={() => this._animation()}>
@@ -129,7 +166,6 @@ const styles = StyleSheet.create({
   text_box: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'center',
   },
   button_container: {
     alignItems: 'center',
@@ -152,6 +188,7 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 12,
     fontWeight: 'bold',
+    letterSpacing: 1,
   },
 });
 
