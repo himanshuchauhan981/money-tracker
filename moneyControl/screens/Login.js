@@ -64,13 +64,19 @@ class Login extends React.Component {
             <Text
               style={{
                 color: 'white',
-                fontWeight: 'bold',
-                fontSize: 40,
+                fontSize: 50,
                 letterSpacing: 2,
+                fontFamily: 'TitilliumWeb',
               }}>
               Welcome back
             </Text>
-            <Text style={{color: 'yellow', letterSpacing: 2, fontSize: 20}}>
+            <Text
+              style={{
+                color: 'yellow',
+                letterSpacing: 2,
+                fontSize: 25,
+                fontFamily: 'TitilliumWeb',
+              }}>
               Sign in to continue
             </Text>
           </ImageBackground>
