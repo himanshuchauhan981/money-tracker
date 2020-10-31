@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-const Initial = () => (
+const Initial = ({navigation}) => (
   <View style={styles.container}>
     <ImageBackground
       source={require('../assets/images/moneyBackground.jpg')}
@@ -19,10 +19,14 @@ const Initial = () => (
         <Text style={styles.subHeadingText}>Track every coin</Text>
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={[styles.button, styles.loginButton]}>
+        <TouchableOpacity
+          style={[styles.button, styles.loginButton]}
+          onPress={() => navigation.push('Login')}>
           <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, styles.signupButton]}>
+        <TouchableOpacity
+          style={[styles.button, styles.signupButton]}
+          onPress={() => navigation.push('Signup')}>
           <Text style={[styles.buttonText, styles.textColor]}>Sign Up</Text>
         </TouchableOpacity>
       </View>
@@ -58,12 +62,12 @@ const styles = StyleSheet.create({
     flex: 1.5,
     flexDirection: 'column',
     justifyContent: 'flex-end',
-    paddingHorizontal: 30,
+    paddingHorizontal: 45,
     paddingVertical: 50,
     width: '100%',
   },
   button: {
-    paddingVertical: 20,
+    paddingVertical: 18,
     paddingHorizontal: 15,
     marginBottom: 10,
     borderRadius: 40,
