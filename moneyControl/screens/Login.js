@@ -11,29 +11,16 @@ import {
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {TypingAnimation} from 'react-native-typing-animation';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontistoIcon from 'react-native-vector-icons/Fontisto';
 import * as Animatable from 'react-native-animatable';
 
 class Login extends React.Component {
   constructor() {
     super();
     this.state = {
-      typing_email: false,
-      typing_password: false,
       animation_login: new Animated.Value(width - 40),
       enable: true,
     };
-  }
-
-  onFocus(value) {
-    if (value === 'email') {
-      this.setState({typing_email: true, typing_password: false});
-    } else {
-      this.setState({typing_email: false, typing_password: true});
-    }
-  }
-
-  _typing() {
-    return <TypingAnimation dotColor="#93278f" style={{marginRight: 25}} />;
   }
 
   _animation() {
@@ -58,49 +45,34 @@ class Login extends React.Component {
       <View style={styles.container}>
         <View style={styles.header}>
           <StatusBar barStyle="light-content" />
-          <ImageBackground
-            source={require('../assets/images/loginHeader.jpg')}
-            style={styles.header_image}>
-            <Text
-              style={{
-                color: 'white',
-                fontSize: 50,
-                letterSpacing: 2,
-                fontFamily: 'TitilliumWeb',
-              }}>
-              Welcome back
-            </Text>
-            <Text
-              style={{
-                color: 'yellow',
-                letterSpacing: 2,
-                fontSize: 25,
-                fontFamily: 'TitilliumWeb',
-              }}>
-              Sign in to continue
-            </Text>
-          </ImageBackground>
+          <Text style={styles.heading}>Welcome!</Text>
+          <Text style={styles.subHeading}>Sign in to continue</Text>
         </View>
         <View style={styles.footer}>
-          <Text style={[styles.title, {marginTop: 50}]}>E-mail</Text>
-          <View style={styles.action}>
-            <TextInput
-              placeholder="Your email"
-              style={styles.text_input}
-              onFocus={() => this.onFocus('email')}
-            />
-            {this.state.typing_email ? this._typing() : null}
+          <View style={[styles.text_container, {marginBottom: 20}]}>
+            <View style={styles.text_box}>
+              <FontistoIcon name="email" size={30} color="#93278f" />
+              <View style={styles.textBox}>
+                <TextInput
+                  placeholder="Email Address"
+                  style={{marginLeft: 10}}
+                />
+              </View>
+            </View>
+            <Text style={styles.error_message}>* Required field</Text>
           </View>
-          <Text style={[styles.title, {marginTop: 20}]}>Password</Text>
-          <View style={styles.action}>
-            <TextInput
-              placeholder="Your password.."
-              secureTextEntry
-              style={styles.text_input}
-              onFocus={() => this.onFocus('password')}
-            />
-            {this.state.typing_password ? this._typing() : null}
+          <View style={styles.text_container}>
+            <View style={styles.text_box}>
+              <FontistoIcon name="email" size={30} color="#93278f" />
+              <TextInput
+                secureTextEntry
+                placeholder="Password"
+                style={{marginLeft: 10}}
+              />
+            </View>
+            <Text style={styles.error_message}>* Required field</Text>
           </View>
+
           <TouchableOpacity onPress={() => this._animation()}>
             <View style={styles.button_container}>
               <Animated.View style={[styles.animation, {width}]}>
@@ -125,54 +97,61 @@ const width = Dimensions.get('screen').width;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#f9f8f8',
     justifyContent: 'center',
   },
   header: {
     flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+  },
+  heading: {
+    fontSize: 50,
+    letterSpacing: 2,
+    fontFamily: 'TitilliumWeb',
+  },
+  subHeading: {
+    letterSpacing: 2,
+    fontSize: 25,
+    fontFamily: 'TitilliumWeb',
   },
   footer: {
     flex: 2,
     padding: 20,
   },
-  header_image: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    height: '100%',
-    borderBottomStartRadius: 80,
-    borderBottomEndRadius: 80,
-    overflow: 'hidden',
+  text_container: {
+    backgroundColor: 'white',
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    borderRadius: 15,
+    elevation: 8,
   },
-  title: {
-    fontWeight: 'bold',
-  },
-  action: {
+  text_box: {
     flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: '#f2f2f2',
-  },
-  text_input: {
-    flex: 1,
-    paddingBottom: 5,
-    color: 'gray',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   },
   button_container: {
     alignItems: 'center',
   },
   animation: {
     backgroundColor: '#93278f',
-    paddingVertical: 10,
+    paddingVertical: 15,
     marginTop: 30,
-    borderRadius: 100,
+    borderRadius: 15,
     justifyContent: 'center',
     alignItems: 'center',
   },
   login_text: {
     color: 'white',
     fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: 22,
+    letterSpacing: 1,
+  },
+  error_message: {
+    color: 'red',
+    fontSize: 12,
+    fontWeight: 'bold',
   },
 });
 
