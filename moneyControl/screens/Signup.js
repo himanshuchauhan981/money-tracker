@@ -1,5 +1,12 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  KeyboardAvoidingView,
+} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -19,147 +26,155 @@ const Signup = () => {
       }}
       validationSchema={schema}
       onSubmit={(values) => console.log(values)}>
-      {({handleChange, handleBlur, handleSubmit, values, errors}) => (
-        <View style={styles.container}>
-          <View style={styles.header}>
-            <Text style={styles.heading}>Sign up</Text>
-            <Text style={styles.sub_heading}>Welcome to all</Text>
-          </View>
-          <View style={styles.body}>
-            <View style={[styles.text_container, {marginBottom: 15}]}>
-              <View style={styles.text_box}>
-                <Fontisto
-                  name="person"
-                  size={30}
-                  color="#93278f"
-                  style={{alignSelf: 'center'}}
-                />
-                <TextInput
-                  style={{marginLeft: 10, flexGrow: 1}}
-                  placeholder="Full name"
-                  onChangeText={handleChange('name')}
-                  onBlur={handleBlur('name')}
-                  value={values.name}
-                />
+      {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
+        <SafeAreaView style={styles.container}>
+          <KeyboardAvoidingView behavior="padding" enabled>
+            <ScrollView>
+              <View style={styles.header}>
+                <Text style={styles.heading}>Sign up</Text>
+                <Text style={styles.sub_heading}>Welcome to all</Text>
               </View>
-              {errors.name ? (
-                <Text style={styles.error_message}>* {errors.name}</Text>
-              ) : null}
-            </View>
-            <View style={[styles.text_container, {marginBottom: 15}]}>
-              <View style={styles.text_box}>
-                <Fontisto
-                  name="mobile-alt"
-                  size={30}
-                  color="#93278f"
-                  style={{alignSelf: 'center'}}
-                />
-                <TextInput
-                  keyboardType="number-pad"
-                  style={{marginLeft: 10, flexGrow: 1}}
-                  placeholder="Mobile number"
-                  maxLength={10}
-                  onChangeText={handleChange('mobile_number')}
-                  onBlur={handleBlur('mobile_number')}
-                  value={values.mobile_number}
-                />
-              </View>
-              {errors.mobile_number ? (
-                <Text style={styles.error_message}>
-                  * {errors.mobile_number}
+              <View style={styles.body}>
+                <View style={[styles.text_container, {marginBottom: 15}]}>
+                  <View style={styles.text_box}>
+                    <Fontisto
+                      name="person"
+                      size={30}
+                      color="#93278f"
+                      style={{alignSelf: 'center'}}
+                    />
+                    <TextInput
+                      style={{marginLeft: 10, flexGrow: 1}}
+                      placeholder="Full name"
+                      onChangeText={handleChange('name')}
+                      onBlur={handleBlur('name')}
+                      value={values.name}
+                    />
+                  </View>
+                  {touched.name && errors.name ? (
+                    <Text style={styles.error_message}>* {errors.name}</Text>
+                  ) : null}
+                </View>
+                <View style={[styles.text_container, {marginBottom: 15}]}>
+                  <View style={styles.text_box}>
+                    <Fontisto
+                      name="mobile-alt"
+                      size={30}
+                      color="#93278f"
+                      style={{alignSelf: 'center'}}
+                    />
+                    <TextInput
+                      keyboardType="number-pad"
+                      style={{marginLeft: 10, flexGrow: 1}}
+                      placeholder="Mobile number"
+                      maxLength={10}
+                      onChangeText={handleChange('mobile_number')}
+                      onBlur={handleBlur('mobile_number')}
+                      value={values.mobile_number}
+                    />
+                  </View>
+                  {touched.mobile_number && errors.mobile_number ? (
+                    <Text style={styles.error_message}>
+                      * {errors.mobile_number}
+                    </Text>
+                  ) : null}
+                </View>
+                <View style={[styles.text_container, {marginBottom: 15}]}>
+                  <View style={styles.text_box}>
+                    <Fontisto
+                      name="email"
+                      size={20}
+                      color="#93278f"
+                      style={{alignSelf: 'center'}}
+                    />
+                    <TextInput
+                      style={{marginLeft: 10, flexGrow: 1}}
+                      placeholder="Email address"
+                      keyboardType="email-address"
+                      onChangeText={handleChange('email')}
+                      onBlur={handleBlur('email')}
+                      value={values.email}
+                    />
+                  </View>
+                  {touched.email && errors.email ? (
+                    <Text style={styles.error_message}>* {errors.email}</Text>
+                  ) : null}
+                </View>
+                <View style={[styles.text_container, {marginBottom: 15}]}>
+                  <View style={styles.text_box}>
+                    <Fontisto
+                      name="key"
+                      size={20}
+                      color="#93278f"
+                      style={{alignSelf: 'center'}}
+                    />
+                    <TextInput
+                      style={{marginLeft: 10, flexGrow: 1}}
+                      placeholder="Password"
+                      secureTextEntry
+                      onChangeText={handleChange('password')}
+                      onBlur={handleBlur('password')}
+                      value={values.password}
+                    />
+                  </View>
+                  {touched.password && errors.password ? (
+                    <Text style={styles.error_message}>
+                      * {errors.password}
+                    </Text>
+                  ) : null}
+                </View>
+                <View style={styles.text_container}>
+                  <View style={styles.text_box}>
+                    <Fontisto
+                      name="key"
+                      size={20}
+                      color="#93278f"
+                      style={{alignSelf: 'center'}}
+                    />
+                    <TextInput
+                      style={{marginLeft: 10, flexGrow: 1}}
+                      placeholder="Confirm password"
+                      secureTextEntry
+                      onChangeText={handleChange('confirm_password')}
+                      onBlur={handleBlur('confirm_password')}
+                      values={values.confirm_password}
+                    />
+                  </View>
+                  {touched.confirm_password && errors.confirm_password ? (
+                    <Text style={styles.error_message}>
+                      * {errors.confirm_password}
+                    </Text>
+                  ) : null}
+                </View>
+                <TouchableOpacity
+                  style={styles.button_container}
+                  onPress={handleSubmit}>
+                  <Text style={styles.button_text}>Sign up</Text>
+                </TouchableOpacity>
+                <Text style={styles.footer_text}>Or</Text>
+                <View style={styles.icon_container}>
+                  <TouchableOpacity style={styles.icon_box}>
+                    <FontAwesome name="facebook-f" size={30} color="#3b5998" />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.icon_box}>
+                    <FontAwesome name="google" size={30} color="#db3236" />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.icon_box}>
+                    <FontAwesome name="twitter" size={30} color="#00acee" />
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.account}>
+                  Have an account ?{' '}
+                  <Text
+                    onPress={() => this.props.navigation.replace('Login')}
+                    style={styles.login_text}>
+                    LOG IN
+                  </Text>
                 </Text>
-              ) : null}
-            </View>
-            <View style={[styles.text_container, {marginBottom: 15}]}>
-              <View style={styles.text_box}>
-                <Fontisto
-                  name="email"
-                  size={20}
-                  color="#93278f"
-                  style={{alignSelf: 'center'}}
-                />
-                <TextInput
-                  style={{marginLeft: 10, flexGrow: 1}}
-                  placeholder="Email address"
-                  keyboardType="email-address"
-                  onChangeText={handleChange('email')}
-                  onBlur={handleBlur('email')}
-                  value={values.email}
-                />
               </View>
-              {errors.email ? (
-                <Text style={styles.error_message}>* {errors.email}</Text>
-              ) : null}
-            </View>
-            <View style={[styles.text_container, {marginBottom: 15}]}>
-              <View style={styles.text_box}>
-                <Fontisto
-                  name="key"
-                  size={20}
-                  color="#93278f"
-                  style={{alignSelf: 'center'}}
-                />
-                <TextInput
-                  style={{marginLeft: 10, flexGrow: 1}}
-                  placeholder="Password"
-                  onChangeText={handleChange('password')}
-                  onBlur={handleBlur('password')}
-                  value={values.password}
-                />
-              </View>
-              {errors.password ? (
-                <Text style={styles.error_message}>* {errors.password}</Text>
-              ) : null}
-            </View>
-            <View style={styles.text_container}>
-              <View style={styles.text_box}>
-                <Fontisto
-                  name="key"
-                  size={20}
-                  color="#93278f"
-                  style={{alignSelf: 'center'}}
-                />
-                <TextInput
-                  style={{marginLeft: 10, flexGrow: 1}}
-                  placeholder="Confirm password"
-                  onChangeText={handleChange('confirm_password')}
-                  onBlur={handleBlur('confirm_password')}
-                  values={values.confirm_password}
-                />
-              </View>
-              {errors.confirm_password ? (
-                <Text style={styles.error_message}>
-                  * {errors.confirm_password}
-                </Text>
-              ) : null}
-            </View>
-            <TouchableOpacity
-              style={styles.button_container}
-              onPress={handleSubmit}>
-              <Text style={styles.button_text}>Sign up</Text>
-            </TouchableOpacity>
-            <Text style={styles.footer_text}>Or</Text>
-            <View style={styles.icon_container}>
-              <TouchableOpacity style={styles.icon_box}>
-                <FontAwesome name="facebook-f" size={30} color="#3b5998" />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.icon_box}>
-                <FontAwesome name="google" size={30} color="#db3236" />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.icon_box}>
-                <FontAwesome name="twitter" size={30} color="#00acee" />
-              </TouchableOpacity>
-            </View>
-            <Text style={styles.account}>
-              Have an account ?{' '}
-              <Text
-                onPress={() => this.props.navigation.replace('Login')}
-                style={styles.login_text}>
-                LOG IN
-              </Text>
-            </Text>
-          </View>
-        </View>
+            </ScrollView>
+          </KeyboardAvoidingView>
+        </SafeAreaView>
       )}
     </Formik>
   );
@@ -188,6 +203,7 @@ const styles = StyleSheet.create({
   body: {
     flex: 4,
     paddingHorizontal: 20,
+    paddingTop: 30,
   },
   text_container: {
     backgroundColor: 'white',

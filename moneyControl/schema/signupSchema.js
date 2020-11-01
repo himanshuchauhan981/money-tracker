@@ -11,7 +11,9 @@ let schema = Yup.object({
   password: Yup.string()
     .min(6, 'Minimum password length should be 6')
     .required('Password is required'),
-  confirm_password: Yup.string().required('Confirm password is required'),
+  confirm_password: Yup.string()
+    .required('Confirm password is required')
+    .oneOf([Yup.ref('password'), null], 'Passwords must match'),
 });
 
 export default schema;
