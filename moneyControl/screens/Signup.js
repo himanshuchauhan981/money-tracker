@@ -14,7 +14,7 @@ import {Formik} from 'formik';
 
 import schema from '../schema/signupSchema';
 
-const Signup = () => {
+const Signup = (props) => {
   return (
     <Formik
       initialValues={{
@@ -166,7 +166,7 @@ const Signup = () => {
                 <Text style={styles.account}>
                   Have an account ?{' '}
                   <Text
-                    onPress={() => this.props.navigation.replace('Login')}
+                    onPress={() => props.navigation.replace('Login')}
                     style={styles.login_text}>
                     LOG IN
                   </Text>

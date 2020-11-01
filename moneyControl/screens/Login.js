@@ -109,6 +109,7 @@ class Login extends React.Component {
               <Text style={styles.error_message}>* Required field</Text>
             ) : null}
           </View>
+          <Text style={styles.forget_password}>Forget password ?</Text>
 
           <TouchableOpacity onPress={() => this._animation()}>
             <View style={styles.button_container}>
@@ -123,6 +124,14 @@ class Login extends React.Component {
               </Animated.View>
             </View>
           </TouchableOpacity>
+          <Text style={styles.account}>
+            Don't have an account ?{' '}
+            <Text
+              onPress={() => this.props.navigation.replace('Signup')}
+              style={styles.signUp_text}>
+              SIGN UP
+            </Text>
+          </Text>
         </View>
       </View>
     );
@@ -189,6 +198,24 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold',
     letterSpacing: 1,
+  },
+  account: {
+    marginTop: 20,
+    fontFamily: 'TitilliumWeb',
+    fontSize: 17,
+    textAlign: 'center',
+  },
+  signup_text: {
+    color: '#93278f',
+    fontWeight: 'bold',
+    textDecorationColor: '#93278f',
+  },
+  forget_password: {
+    fontFamily: 'TitilliumWeb',
+    fontSize: 16,
+    color: '#93278f',
+    marginTop: 10,
+    textAlign: 'right',
   },
 });
 
