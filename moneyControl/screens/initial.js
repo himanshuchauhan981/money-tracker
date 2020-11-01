@@ -52,11 +52,12 @@ const styles = StyleSheet.create({
   },
   headingText: {
     letterSpacing: 3,
-    fontWeight: '400',
-    fontSize: 40,
+    fontFamily: 'TitilliumWeb',
+    fontSize: 50,
   },
   subHeadingText: {
     fontSize: 20,
+    fontFamily: 'TitilliumWeb',
   },
   buttonContainer: {
     flex: 1.5,
@@ -89,7 +90,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   signupButton: {
-    backgroundColor: 'blue',
+    backgroundColor: '#93278f',
   },
   loginButton: {
     backgroundColor: 'white',
