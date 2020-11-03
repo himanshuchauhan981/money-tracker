@@ -34,6 +34,9 @@
 		A77A55DC3BE443A3A3A50527 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03396ED1F6874D9696B2D21A /* SimpleLineIcons.ttf */; };
 		A935D50D75DB4AF5887A40CC /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6CFD8FDD918B4DAE959094B0 /* Zocial.ttf */; };
 		1868A33835B74EAE8D9D13DD /* TitilliumWeb.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4CED6C59762148F380B8CFBE /* TitilliumWeb.ttf */; };
+		D0B73566F7AF4BB2BF44DF02 /* Arimo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9929268DEFC546CAA35AE1DB /* Arimo.ttf */; };
+		F428CBBC9256423591B997B6 /* Arimo-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6D07B2E761194AA68555AA1A /* Arimo-Bold.ttf */; };
+		716504A039EC463C989B1F03 /* Arimo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 32474ED9A30641D58D984459 /* Arimo-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +90,9 @@
 		03396ED1F6874D9696B2D21A /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; name = "SimpleLineIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		6CFD8FDD918B4DAE959094B0 /* Zocial.ttf */ = {isa = PBXFileReference; name = "Zocial.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		4CED6C59762148F380B8CFBE /* TitilliumWeb.ttf */ = {isa = PBXFileReference; name = "TitilliumWeb.ttf"; path = "../assets/fonts/TitilliumWeb.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		9929268DEFC546CAA35AE1DB /* Arimo.ttf */ = {isa = PBXFileReference; name = "Arimo.ttf"; path = "../assets/fonts/Arimo.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		6D07B2E761194AA68555AA1A /* Arimo-Bold.ttf */ = {isa = PBXFileReference; name = "Arimo-Bold.ttf"; path = "../assets/fonts/Arimo-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		32474ED9A30641D58D984459 /* Arimo-Regular.ttf */ = {isa = PBXFileReference; name = "Arimo-Regular.ttf"; path = "../assets/fonts/Arimo-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,6 +221,9 @@
 				03396ED1F6874D9696B2D21A /* SimpleLineIcons.ttf */,
 				6CFD8FDD918B4DAE959094B0 /* Zocial.ttf */,
 				4CED6C59762148F380B8CFBE /* TitilliumWeb.ttf */,
+				9929268DEFC546CAA35AE1DB /* Arimo.ttf */,
+				6D07B2E761194AA68555AA1A /* Arimo-Bold.ttf */,
+				32474ED9A30641D58D984459 /* Arimo-Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -376,6 +385,9 @@
 				A77A55DC3BE443A3A3A50527 /* SimpleLineIcons.ttf in Resources */,
 				A935D50D75DB4AF5887A40CC /* Zocial.ttf in Resources */,
 				1868A33835B74EAE8D9D13DD /* TitilliumWeb.ttf in Resources */,
+				D0B73566F7AF4BB2BF44DF02 /* Arimo.ttf in Resources */,
+				F428CBBC9256423591B997B6 /* Arimo-Bold.ttf in Resources */,
+				716504A039EC463C989B1F03 /* Arimo-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
