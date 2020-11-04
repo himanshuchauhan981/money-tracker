@@ -13,8 +13,33 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Formik} from 'formik';
 
 import schema from '../schema/signupSchema';
+import UserService from '../services/UserService';
+import {Snackbar} from 'react-native-paper';
 
 const Signup = (props) => {
+  let [errorMessage, setMessage] = React.useState('');
+  let [visible, setVisible] = React.useState(false);
+
+  let toggleSnackBar = () => setVisible(!visible);
+
+  let dismissSnackBar = () => setVisible(false);
+
+  const signUpUser = (userData) => {
+    let userService = new UserService();
+
+    userService
+      .createNewUser(userData)
+      .then((res) => {})
+      .catch((err) => {
+        setMessage(err.response.data.msg);
+        toggleSnackBar();
+      });
+  };
+
+  let toggleOverlay = () => {
+    setVisible(!visible);
+  };
+
   return (
     <Formik
       initialValues={{
@@ -25,7 +50,7 @@ const Signup = (props) => {
         confirm_password: '',
       }}
       validationSchema={schema}
-      onSubmit={(values) => console.log(values)}>
+      onSubmit={(values) => signUpUser(values)}>
       {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
         <SafeAreaView style={styles.container}>
           <KeyboardAvoidingView behavior="padding" enabled>
@@ -138,6 +163,7 @@ const Signup = (props) => {
                       onChangeText={handleChange('confirm_password')}
                       onBlur={handleBlur('confirm_password')}
                       values={values.confirm_password}
+                      defaultValue="Himanshu"
                     />
                   </View>
                   {touched.confirm_password && errors.confirm_password ? (
@@ -173,6 +199,20 @@ const Signup = (props) => {
                 </Text>
               </View>
             </ScrollView>
+            <View style={{marginHorizontal: 20}}>
+              <Snackbar
+                visible={visible}
+                onDismiss={dismissSnackBar}
+                action={{
+                  label: 'Close',
+                  onPress: () => {
+                    toggleSnackBar();
+                  },
+                }}
+                duration={10000}>
+                <Text style={{fontSize: 16}}>{errorMessage}</Text>
+              </Snackbar>
+            </View>
           </KeyboardAvoidingView>
         </SafeAreaView>
       )}
