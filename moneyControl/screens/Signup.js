@@ -11,11 +11,11 @@ import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Formik} from 'formik';
+import {Snackbar} from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import schema from '../schema/signupSchema';
 import UserService from '../services/UserService';
-import {Snackbar} from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Signup = (props) => {
   let [errorMessage, setMessage] = React.useState('');
@@ -35,7 +35,6 @@ const Signup = (props) => {
         props.navigation.replace('Home');
       })
       .catch((err) => {
-        console.log(err.response.data);
         setMessage(err.response.data.msg);
         toggleSnackBar();
       });
@@ -164,7 +163,6 @@ const Signup = (props) => {
                       onChangeText={handleChange('confirm_password')}
                       onBlur={handleBlur('confirm_password')}
                       values={values.confirm_password}
-                      defaultValue="Himanshu"
                     />
                   </View>
                   {touched.confirm_password && errors.confirm_password ? (

@@ -11,129 +11,176 @@ import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
 import * as Animatable from 'react-native-animatable';
+import {Formik} from 'formik';
+import {Snackbar} from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import schema from '../schema/loginSchema';
+import UserService from '../services/UserService';
 
 class Login extends React.Component {
   constructor() {
     super();
     this.state = {
-      email: {value: '', error: ''},
-      password: {value: '', error: ''},
       animation_login: new Animated.Value(width - 40),
       enable: true,
+      snackbar: {show: false, msg: ''},
     };
   }
 
-  _animation() {
-    let validateState = this.validateFields();
-    if (!validateState) {
-      Animated.timing(this.state.animation_login, {
-        toValue: 40,
-        duration: 240,
-        useNativeDriver: false,
-      }).start();
+  toggleSnackBar = (show, msg) => {
+    console.log(msg);
+    this.setState(
+      {snackbar: {show: show, msg: msg}},
+      () => this.state.snackbar,
+    );
+  };
 
-      setTimeout(() => {
-        this.setState({
+  animateButton = async (token) => {
+    await AsyncStorage.setItem('token', token);
+    Animated.timing(this.state.animation_login, {
+      toValue: 40,
+      duration: 240,
+      useNativeDriver: false,
+    }).start();
+
+    setTimeout(() => {
+      this.setState(
+        {
           enable: false,
-        });
-      }, 150);
-    }
+        },
+        () => this.props.navigation.push('Home'),
+      );
+    }, 150);
+  };
+
+  login_user(userData) {
+    let userService = new UserService();
+
+    userService
+      .loginUser(userData)
+      .then((res) => {
+        this.animateButton(res.data.token);
+      })
+      .catch((err) => {
+        console.log('jhe;');
+        this.toggleSnackBar(true, err.response.data.msg);
+      });
   }
-
-  onTextChange = (key, value) => {
-    this.setState({
-      [key]: value,
-    });
-  };
-
-  validateFields = () => {
-    let error = false;
-    let {email, password} = this.state;
-    if (email.value === '') email.error = 'Required field';
-    else email.error = '';
-    if (password.value === '') password.error = 'Required field';
-    else password.error = '';
-
-    if (email.error !== '' || password.error !== '') {
-      error = true;
-    }
-    this.setState({email, password});
-    return error;
-  };
 
   render() {
     const width = this.state.animation_login;
-    const {email, password} = this.state;
+    let {snackbar} = this.state;
     return (
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <StatusBar barStyle="light-content" />
-          <Text style={styles.heading}>Welcome!</Text>
-          <Text style={styles.subHeading}>Sign in to continue</Text>
-        </View>
-        <View style={styles.footer}>
-          <View style={[styles.text_container, {marginBottom: 20}]}>
-            <View style={styles.text_box}>
-              <FontistoIcon
-                name="email"
-                size={30}
-                color="#93278f"
-                style={{alignSelf: 'center'}}
-              />
-              <TextInput
-                placeholder="Email Address"
-                style={{marginLeft: 10, flexGrow: 1}}
-                onChangeText={(text) => this.onTextChange('email', text)}
-              />
+      <Formik
+        validationSchema={schema}
+        initialValues={{email: 'himanshu@gmail.com', password: 'himanshu'}}
+        onSubmit={(values) => this.login_user(values)}>
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          errors,
+          touched,
+        }) => (
+          <View style={styles.container}>
+            <View style={styles.header}>
+              <StatusBar barStyle="light-content" />
+              <Text style={styles.heading}>Welcome!</Text>
+              <Text style={styles.sub_heading}>Sign in to continue</Text>
             </View>
-            {email.error ? (
-              <Text style={styles.error_message}>* {email.error}</Text>
-            ) : null}
-          </View>
-          <View style={styles.text_container}>
-            <View style={styles.text_box}>
-              <FontistoIcon
-                name="email"
-                size={30}
-                color="#93278f"
-                style={{alignSelf: 'center'}}
-              />
-              <TextInput
-                secureTextEntry
-                placeholder="Password"
-                style={{marginLeft: 10, flexGrow: 1}}
-                onChangeText={(text) => this.onTextChange('password', text)}
-              />
-            </View>
-            {password.error ? (
-              <Text style={styles.error_message}>* Required field</Text>
-            ) : null}
-          </View>
-          <Text style={styles.forget_password}>Forget password ?</Text>
+            <View style={styles.footer}>
+              <View style={[styles.text_container, {marginBottom: 20}]}>
+                <View style={styles.text_box}>
+                  <FontistoIcon
+                    name="email"
+                    size={30}
+                    color="#93278f"
+                    style={{alignSelf: 'center'}}
+                  />
+                  <TextInput
+                    placeholder="Email Address"
+                    keyboardType="email-address"
+                    style={{marginLeft: 10, flexGrow: 1}}
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
+                    value={values.email}
+                  />
+                </View>
+                {touched.email && errors.email ? (
+                  <Text style={styles.error_message}>* {errors.email}</Text>
+                ) : null}
+              </View>
+              <View style={styles.text_container}>
+                <View style={styles.text_box}>
+                  <FontistoIcon
+                    name="email"
+                    size={30}
+                    color="#93278f"
+                    style={{alignSelf: 'center'}}
+                  />
+                  <TextInput
+                    secureTextEntry
+                    placeholder="Password"
+                    style={{marginLeft: 10, flexGrow: 1}}
+                    onChangeText={handleChange('password')}
+                    onBlur={handleBlur('password')}
+                    value={values.password}
+                  />
+                </View>
+                {touched.password && errors.password ? (
+                  <Text style={styles.error_message}>* {errors.password}</Text>
+                ) : null}
+              </View>
+              <Text style={styles.forget_password}>Forget password ?</Text>
 
-          <TouchableOpacity onPress={() => this._animation()}>
-            <View style={styles.button_container}>
-              <Animated.View style={[styles.animation, {width}]}>
-                {this.state.enable ? (
-                  <Text style={styles.login_text}>Login</Text>
-                ) : (
-                  <Animatable.View animation="bounceIn" delay={50}>
-                    <FontAwesome name="check" color="white" size={20} />
-                  </Animatable.View>
-                )}
-              </Animated.View>
+              <TouchableOpacity onPress={handleSubmit}>
+                <View style={styles.button_container}>
+                  <Animated.View
+                    style={[
+                      styles.animation,
+                      this.state.enable
+                        ? {borderRadius: 15}
+                        : {borderRadius: 100},
+                      {width},
+                    ]}>
+                    {this.state.enable ? (
+                      <Text style={styles.login_text}>Login</Text>
+                    ) : (
+                      <Animatable.View animation="bounceIn" delay={50}>
+                        <FontAwesome name="check" color="white" size={20} />
+                      </Animatable.View>
+                    )}
+                  </Animated.View>
+                </View>
+              </TouchableOpacity>
+              <Text style={styles.account}>
+                Don't have an account ?{' '}
+                <Text
+                  onPress={() => this.props.navigation.replace('Signup')}
+                  style={styles.signUp_text}>
+                  SIGN UP
+                </Text>
+              </Text>
             </View>
-          </TouchableOpacity>
-          <Text style={styles.account}>
-            Don't have an account ?{' '}
-            <Text
-              onPress={() => this.props.navigation.replace('Signup')}
-              style={styles.signUp_text}>
-              SIGN UP
-            </Text>
-          </Text>
-        </View>
-      </View>
+            <View style={{margin: 20}}>
+              <Snackbar
+                visible={this.state.snackbar.show}
+                onDismiss={() => this.toggleSnackBar(false)}
+                action={{
+                  label: 'Close',
+                  onPress: () => {
+                    this.toggleSnackBar(false);
+                  },
+                }}
+                duration={10000}>
+                <Text style={{fontSize: 16}}>{snackbar.msg}</Text>
+              </Snackbar>
+            </View>
+          </View>
+        )}
+      </Formik>
     );
   }
 }
@@ -156,7 +203,7 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
     fontFamily: 'TitilliumWeb',
   },
-  subHeading: {
+  sub_heading: {
     letterSpacing: 2,
     fontSize: 25,
     fontFamily: 'TitilliumWeb',
@@ -181,9 +228,8 @@ const styles = StyleSheet.create({
   },
   animation: {
     backgroundColor: '#93278f',
-    paddingVertical: 15,
+    paddingVertical: 10,
     marginTop: 30,
-    borderRadius: 15,
     justifyContent: 'center',
     alignItems: 'center',
   },

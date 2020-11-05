@@ -12,15 +12,14 @@ const Drawer = createDrawerNavigator();
 
 let check_user_token = async () => {
   let token = await AsyncStorage.getItem('token');
-  if (token) return true;
-  else return false;
+  if (token === null) return false;
+  else return true;
 };
 
 const App = () => {
-  let validateToken = check_user_token();
   return (
     <NavigationContainer>
-      {!validateToken ? (
+      {check_user_token() ? (
         <RootStackScreen />
       ) : (
         <Drawer.Navigator

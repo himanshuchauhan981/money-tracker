@@ -9,7 +9,7 @@ import Home from './Home';
 const RootStack = createStackNavigator();
 
 const RootStackScreen = ({navigation}) => (
-  <RootStack.Navigator initialRouteName="Initial">
+  <RootStack.Navigator initialRouteName="Login">
     <RootStack.Screen
       name="Initial"
       component={Initial}

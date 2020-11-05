@@ -23,6 +23,24 @@ const user = {
 			}
 		}
 	},
+	login_user: async (email, password) => {
+		try {
+			let credentials = await firebase
+				.auth()
+				.signInWithEmailAndPassword(email, password);
+			let token = await credentials.user.getIdToken();
+			return { status: 200, data: { token } };
+		} catch (error) {
+			if (error.code === 'auth/wrong-password') {
+				return { status: 401, data: { msg: 'Wrong credentials' } };
+			} else if (error.code === 'auth/too-many-requests') {
+				return {
+					status: 200,
+					data: { msg: 'Too many request. Try again later' },
+				};
+			}
+		}
+	},
 };
 
 module.exports = user;
