@@ -1,19 +1,10 @@
 const { userHandler } = require('../handlers');
-const firebase = require('firebase').default;
 
 const user = {
-	saveNewUser: async (req, res) => {
-		let email = req.body.email;
-		let password = req.body.password;
-		firebase
-			.auth()
-			.createUserWithEmailAndPassword(email, password)
-			.then((res) => {})
-			.catch((error) => {
-				if (error.code === 'auth/email-already-in-use') {
-					res.status(409).send({ msg: 'Email ID already existed' });
-				}
-			});
+	save_new_user: async (req, res) => {
+		let userData = req.body;
+		let response = await userHandler.save_new_user(userData);
+		res.status(response.status).send(response.data);
 	},
 };
 

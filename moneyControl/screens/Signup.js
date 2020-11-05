@@ -15,6 +15,7 @@ import {Formik} from 'formik';
 import schema from '../schema/signupSchema';
 import UserService from '../services/UserService';
 import {Snackbar} from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Signup = (props) => {
   let [errorMessage, setMessage] = React.useState('');
@@ -29,25 +30,26 @@ const Signup = (props) => {
 
     userService
       .createNewUser(userData)
-      .then((res) => {})
+      .then(async (res) => {
+        await AsyncStorage.setItem('token', res.data.token);
+        props.navigation.replace('Home');
+        // props.navigation.navigate('Home');
+      })
       .catch((err) => {
+        console.log(err.response.data);
         setMessage(err.response.data.msg);
         toggleSnackBar();
       });
   };
 
-  let toggleOverlay = () => {
-    setVisible(!visible);
-  };
-
   return (
     <Formik
       initialValues={{
-        name: '',
-        mobile_number: '',
-        email: '',
-        password: '',
-        confirm_password: '',
+        name: 'Himanshu Chauhan',
+        mobile_number: '9876170809',
+        email: 'himanshu@gmail.com',
+        password: 'Himanshu',
+        confirm_password: 'Himanshu',
       }}
       validationSchema={schema}
       onSubmit={(values) => signUpUser(values)}>

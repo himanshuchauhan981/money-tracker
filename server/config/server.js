@@ -10,6 +10,7 @@ const cookieParser = require('cookie-parser');
 dotenv.config();
 const { HOST, PORT } = require('./config');
 const { routes } = require('../routes');
+var firebaseAdmin = require('firebase-admin');
 
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
