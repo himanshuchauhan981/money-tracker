@@ -1,42 +1,33 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import Initial from './screens/initial';
-import Login from './screens/Login';
-import Signup from './screens/Signup';
 import Home from './screens/Home';
 import DrawerContent from './screens/DrawerContent';
+import RootStackScreen from './screens/RootStack';
 
 const Drawer = createDrawerNavigator();
 
+let check_user_token = async () => {
+  let token = await AsyncStorage.getItem('token');
+  if (token) return true;
+  else return false;
+};
+
 const App = () => {
+  let validateToken = check_user_token();
   return (
     <NavigationContainer>
-      <Drawer.Navigator
-        initialRouteName="Signup"
-        drawerContent={(props) => <DrawerContent {...props} />}>
-        <Drawer.Screen
-          name="Initial"
-          component={Initial}
-          options={{headerShown: false}}
-        />
-        <Drawer.Screen
-          name="Login"
-          component={Login}
-          options={{headerShown: false}}
-        />
-        <Drawer.Screen
-          name="Signup"
-          component={Signup}
-          options={{headerShown: false}}
-        />
-        <Drawer.Screen
-          name="Home"
-          component={Home}
-          options={{headerShown: false}}
-        />
-      </Drawer.Navigator>
+      {!validateToken ? (
+        <RootStackScreen />
+      ) : (
+        <Drawer.Navigator
+          initialRouteName="Home"
+          drawerContent={(props) => <DrawerContent {...props} />}>
+          <Drawer.Screen name="Home" component={Home} />
+        </Drawer.Navigator>
+      )}
     </NavigationContainer>
   );
 };

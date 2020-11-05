@@ -33,7 +33,6 @@ const Signup = (props) => {
       .then(async (res) => {
         await AsyncStorage.setItem('token', res.data.token);
         props.navigation.replace('Home');
-        // props.navigation.navigate('Home');
       })
       .catch((err) => {
         console.log(err.response.data);
@@ -45,11 +44,11 @@ const Signup = (props) => {
   return (
     <Formik
       initialValues={{
-        name: 'Himanshu Chauhan',
-        mobile_number: '9876170809',
-        email: 'himanshu@gmail.com',
-        password: 'Himanshu',
-        confirm_password: 'Himanshu',
+        name: '',
+        mobile_number: '',
+        email: '',
+        password: '',
+        confirm_password: '',
       }}
       validationSchema={schema}
       onSubmit={(values) => signUpUser(values)}>
