@@ -1,19 +1,13 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createDrawerNavigator} from '@react-navigation/drawer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 
-import Home from './screens/Home';
-import DrawerContent from './screens/DrawerContent';
 import RootStackScreen from './screens/RootStack';
-import Initial from './screens/initial';
 import rootReducers from './reducers';
-import userReducer from './reducers/userReducer';
 
 const store = createStore(rootReducers);
-const Drawer = createDrawerNavigator();
 
 let check_user_token = async () => {
   let token = await AsyncStorage.getItem('token');
@@ -22,20 +16,10 @@ let check_user_token = async () => {
 };
 
 const App = () => {
-  const [user] = React.useReducer(userReducer, {authenticate: false});
   return (
     <Provider store={store}>
       <NavigationContainer>
-        {user.authenticate ? (
-          <RootStackScreen />
-        ) : (
-          <Drawer.Navigator
-            initialRouteName="Home"
-            drawerContent={(props) => <DrawerContent {...props} />}>
-            <Drawer.Screen name="Home" component={Home} />
-            <Drawer.Screen name="Initial" component={Initial} />
-          </Drawer.Navigator>
-        )}
+        <RootStackScreen />
       </NavigationContainer>
     </Provider>
   );

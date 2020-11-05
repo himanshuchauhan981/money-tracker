@@ -1,15 +1,29 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 
 import Initial from './initial';
 import Login from './Login';
 import Signup from './Signup';
+import DrawerContent from './DrawerContent';
 import Home from './Home';
 
+const Drawer = createDrawerNavigator();
 const RootStack = createStackNavigator();
 
+const DrawerStack = () => {
+  return (
+    <Drawer.Navigator
+      initialRouteName="Home"
+      drawerContent={(props) => <DrawerContent {...props} />}>
+      <Drawer.Screen name="Home" component={Home} />
+      <Drawer.Screen name="Initial" component={Initial} />
+    </Drawer.Navigator>
+  );
+};
+
 const RootStackScreen = ({navigation}) => (
-  <RootStack.Navigator initialRouteName="Login">
+  <RootStack.Navigator initialRouteName="Initial">
     <RootStack.Screen
       name="Initial"
       component={Initial}
@@ -27,7 +41,7 @@ const RootStackScreen = ({navigation}) => (
     />
     <RootStack.Screen
       name="Home"
-      component={Home}
+      component={DrawerStack}
       options={{headerShown: false}}
     />
   </RootStack.Navigator>

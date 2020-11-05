@@ -3,7 +3,7 @@ import {StyleSheet, View, Text, ImageBackground} from 'react-native';
 import {Avatar, ListItem, Overlay} from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {connect} from 'react-redux';
-import {StackActions, NavigationAction} from '@react-navigation/native';
+import {CommonActions} from '@react-navigation/native';
 import * as ActionTypes from '../action';
 
 const DrawerContent = (props) => {
@@ -17,6 +17,9 @@ const DrawerContent = (props) => {
     await AsyncStorage.removeItem('token');
     props.authenticate_user(false);
     toggle_overlay();
+    props.navigation.dispatch(
+      CommonActions.reset({index: 0, routes: [{name: 'Initial'}]}),
+    );
   };
 
   return (
