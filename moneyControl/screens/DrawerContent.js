@@ -13,7 +13,6 @@ const DrawerContent = (props) => {
   let signout_user = async () => {
     await AsyncStorage.removeItem('token');
     toggle_overlay();
-    console.log(props.navigation);
   };
 
   return (
