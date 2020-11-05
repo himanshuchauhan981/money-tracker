@@ -10,6 +10,7 @@ import DrawerContent from './screens/DrawerContent';
 import RootStackScreen from './screens/RootStack';
 import Initial from './screens/initial';
 import rootReducers from './reducers';
+import userReducer from './reducers/userReducer';
 
 const store = createStore(rootReducers);
 const Drawer = createDrawerNavigator();
@@ -21,10 +22,11 @@ let check_user_token = async () => {
 };
 
 const App = () => {
+  const [user] = React.useReducer(userReducer, {authenticate: false});
   return (
     <Provider store={store}>
       <NavigationContainer>
-        {check_user_token() ? (
+        {user.authenticate ? (
           <RootStackScreen />
         ) : (
           <Drawer.Navigator

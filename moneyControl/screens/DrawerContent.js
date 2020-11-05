@@ -2,6 +2,9 @@ import React from 'react';
 import {StyleSheet, View, Text, ImageBackground} from 'react-native';
 import {Avatar, ListItem, Overlay} from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {connect} from 'react-redux';
+import {StackActions, NavigationAction} from '@react-navigation/native';
+import * as ActionTypes from '../action';
 
 const DrawerContent = (props) => {
   let [visible, set_visible] = React.useState(false);
@@ -12,6 +15,7 @@ const DrawerContent = (props) => {
 
   let signout_user = async () => {
     await AsyncStorage.removeItem('token');
+    props.authenticate_user(false);
     toggle_overlay();
   };
 
@@ -181,4 +185,15 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DrawerContent;
+const map_dispatch_to_props = (dispatch) => {
+  return {
+    authenticate_user: (authenticate) => {
+      dispatch({
+        type: ActionTypes.AUTHENTICATE_USER,
+        authenticate: authenticate,
+      });
+    },
+  };
+};
+
+export default connect(null, map_dispatch_to_props)(DrawerContent);

@@ -14,9 +14,11 @@ import * as Animatable from 'react-native-animatable';
 import {Formik} from 'formik';
 import {Snackbar} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {connect} from 'react-redux';
 
 import schema from '../schema/loginSchema';
 import UserService from '../services/UserService';
+import * as ActionTypes from '../action';
 
 class Login extends React.Component {
   constructor() {
@@ -29,7 +31,6 @@ class Login extends React.Component {
   }
 
   toggleSnackBar = (show, msg) => {
-    console.log(msg);
     this.setState(
       {snackbar: {show: show, msg: msg}},
       () => this.state.snackbar,
@@ -38,6 +39,7 @@ class Login extends React.Component {
 
   animateButton = async (token) => {
     await AsyncStorage.setItem('token', token);
+    this.props.authenticate_user(true);
     Animated.timing(this.state.animation_login, {
       toValue: 40,
       duration: 240,
@@ -63,7 +65,6 @@ class Login extends React.Component {
         this.animateButton(res.data.token);
       })
       .catch((err) => {
-        console.log('jhe;');
         this.toggleSnackBar(true, err.response.data.msg);
       });
   }
@@ -265,4 +266,15 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+const map_dispatch_to_props = (dispatch) => {
+  return {
+    authenticate_user: (authenticate) => {
+      dispatch({
+        type: ActionTypes.AUTHENTICATE_USER,
+        authenticate: authenticate,
+      });
+    },
+  };
+};
+
+export default connect(null, map_dispatch_to_props)(Login);
