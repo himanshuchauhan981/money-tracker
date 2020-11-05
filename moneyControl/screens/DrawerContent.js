@@ -1,15 +1,28 @@
 import React from 'react';
-import {StyleSheet, View, Text, Image, ImageBackground} from 'react-native';
-import {Avatar, ListItem} from 'react-native-elements';
+import {StyleSheet, View, Text, ImageBackground} from 'react-native';
+import {Avatar, ListItem, Overlay} from 'react-native-elements';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DrawerContent = (props) => {
+  let [visible, set_visible] = React.useState(false);
+
+  let toggle_overlay = () => {
+    set_visible(!visible);
+  };
+
+  let signout_user = async () => {
+    await AsyncStorage.removeItem('token');
+    toggle_overlay();
+    console.log(props.navigation);
+  };
+
   return (
     <View style={styles.drawer}>
       <ImageBackground
         source={require('../assets/images/moneyBackground.jpg')}
         style={{flex: 1}}
       />
-      <View style={styles.drawerHeader}>
+      <View style={styles.drawer_header}>
         <Avatar
           rounded
           size="large"
@@ -21,7 +34,7 @@ const DrawerContent = (props) => {
         <Text style={styles.name}>Himanshu Chauhan</Text>
         <Text style={styles.email}>himanshuchauhan981@gmail.com</Text>
       </View>
-      <View style={styles.drawerContent}>
+      <View style={styles.drawer_content}>
         <ListItem style={{backgroundColor: 'red'}} topDivider bottomDivider>
           <Avatar
             rounded
@@ -33,7 +46,7 @@ const DrawerContent = (props) => {
             }}
           />
           <ListItem.Content>
-            <ListItem.Title style={styles.listTitle}>Home</ListItem.Title>
+            <ListItem.Title style={styles.list_title}>Home</ListItem.Title>
           </ListItem.Content>
         </ListItem>
         <ListItem bottomDivider>
@@ -47,7 +60,7 @@ const DrawerContent = (props) => {
             }}
           />
           <ListItem.Content>
-            <ListItem.Title style={styles.listTitle}>Setting</ListItem.Title>
+            <ListItem.Title style={styles.list_title}>Setting</ListItem.Title>
           </ListItem.Content>
         </ListItem>
         <ListItem bottomDivider>
@@ -61,12 +74,17 @@ const DrawerContent = (props) => {
             }}
           />
           <ListItem.Content>
-            <ListItem.Title style={styles.listTitle}>About</ListItem.Title>
+            <ListItem.Title style={styles.list_title}>About</ListItem.Title>
           </ListItem.Content>
         </ListItem>
       </View>
-      <View style={styles.drawerFooter}>
-        <ListItem topDivider>
+      <View style={styles.drawer_footer}>
+        <ListItem
+          topDivider
+          onPress={() => {
+            props.navigation.toggleDrawer();
+            toggle_overlay();
+          }}>
           <Avatar
             rounded
             size="medium"
@@ -77,6 +95,29 @@ const DrawerContent = (props) => {
           </ListItem.Content>
         </ListItem>
       </View>
+      <Overlay
+        isVisible={visible}
+        onBackdropPress={toggle_overlay}
+        overlayStyle={styles.overlay_container}>
+        <View style={{padding: 10}}>
+          <Text style={styles.overlay_heading}>Confirm Sign Out</Text>
+          <Text style={styles.overlay_error}>
+            User, you are signing out of your account on this device.
+          </Text>
+          <View
+            style={styles.overlay_button_container}
+            onStartShouldSetResponder={signout_user}>
+            <View style={styles.overlay_button}>
+              <Text style={styles.overlay_button_text}>SignOut</Text>
+            </View>
+            <View
+              style={styles.overlay_button}
+              onStartShouldSetResponder={toggle_overlay}>
+              <Text style={styles.overlay_button_text}>Cancel</Text>
+            </View>
+          </View>
+        </View>
+      </Overlay>
     </View>
   );
 };
@@ -85,7 +126,7 @@ const styles = StyleSheet.create({
   drawer: {
     flex: 1,
   },
-  drawerHeader: {
+  drawer_header: {
     flex: 1,
     justifyContent: 'center',
     paddingHorizontal: 20,
@@ -100,17 +141,44 @@ const styles = StyleSheet.create({
     fontFamily: 'Arimo-Regular',
     fontSize: 13,
   },
-  drawerContent: {
+  drawer_content: {
     flex: 2,
   },
-  drawerFooter: {
+  drawer_footer: {
     flex: 1,
     justifyContent: 'flex-end',
   },
-  listTitle: {
+  list_title: {
     color: 'black',
     fontSize: 19,
     fontFamily: 'TitilliumWeb',
+  },
+  overlay_container: {
+    borderRadius: 15,
+    margin: 20,
+  },
+  overlay_heading: {
+    fontFamily: 'Arimo-Bold',
+    fontSize: 22,
+  },
+  overlay_error: {
+    fontFamily: 'TitilliumWeb',
+    fontSize: 17,
+    marginTop: 5,
+  },
+  overlay_button_text: {
+    fontFamily: 'Arimo-Bold',
+    fontSize: 18,
+    color: '#2C5CD5',
+    textAlign: 'center',
+  },
+  overlay_button_container: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  overlay_button: {
+    flex: 1,
+    paddingVertical: 10,
   },
 });
 

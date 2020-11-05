@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Home from './screens/Home';
 import DrawerContent from './screens/DrawerContent';
 import RootStackScreen from './screens/RootStack';
+import Initial from './screens/initial';
 
 const Drawer = createDrawerNavigator();
 
@@ -26,6 +27,7 @@ const App = () => {
           initialRouteName="Home"
           drawerContent={(props) => <DrawerContent {...props} />}>
           <Drawer.Screen name="Home" component={Home} />
+          <Drawer.Screen name="Initial" component={Initial} />
         </Drawer.Navigator>
       )}
     </NavigationContainer>
