@@ -72,7 +72,7 @@ class Login extends React.Component {
     return (
       <Formik
         validationSchema={schema}
-        initialValues={{email: 'himanshu@gmail.com', password: 'himanshu'}}
+        initialValues={{email: '', password: ''}}
         onSubmit={(values) => this.login_user(values)}>
         {({
           handleChange,
@@ -131,7 +131,11 @@ class Login extends React.Component {
                   <Text style={styles.error_message}>* {errors.password}</Text>
                 ) : null}
               </View>
-              <Text style={styles.forget_password}>Forget password ?</Text>
+              <Text
+                onPress={() => this.props.navigation.replace('ForgetPassword')}
+                style={styles.forget_password}>
+                Forget password ?
+              </Text>
 
               <TouchableOpacity onPress={handleSubmit}>
                 <View style={styles.button_container}>
@@ -156,7 +160,9 @@ class Login extends React.Component {
               <Text style={styles.account}>
                 Don't have an account ?{' '}
                 <Text
-                  onPress={() => this.props.navigation.replace('Signup')}
+                  onPress={() =>
+                    this.props.navigation.replace('ForgetPassword')
+                  }
                   style={styles.signUp_text}>
                   SIGN UP
                 </Text>
