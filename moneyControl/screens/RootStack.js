@@ -7,7 +7,7 @@ import Login from './Login';
 import Signup from './Signup';
 import DrawerContent from './DrawerContent';
 import Home from './Home';
-import ForgetPassword from './ForgetPassword';
+import ForgetPassword from './ForgetPassword/ForgetPassword';
 
 const Drawer = createDrawerNavigator();
 const RootStack = createStackNavigator();
