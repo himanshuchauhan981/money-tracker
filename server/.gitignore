@@ -1,2 +1,3 @@
 node_modules/
 db/init-firebase.js
+config/credentials.js

@@ -8,5 +8,7 @@ module.exports = () => {
 
 	router.post('/login', userController.login_user);
 
+	router.post('/reset', userController.generate_otp);
+
 	return router;
 };
