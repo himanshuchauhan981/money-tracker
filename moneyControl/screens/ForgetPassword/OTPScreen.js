@@ -19,6 +19,7 @@ const OTPScreen = () => {
       </View>
       <View style={styles.otp_footer}>
         <OTPTextInput
+          inputCount={6}
           textInputStyle={styles.otp_text_input}
           tintColor="white"
           offTintColor="white"
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
   },
   otp_footer: {
     flex: 4,
-    paddingHorizontal: 60,
+    paddingHorizontal: 20,
     justifyContent: 'center',
   },
   otp_text_input: {

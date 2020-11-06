@@ -3,12 +3,34 @@ import {StyleSheet, Text, View} from 'react-native';
 import {Icon} from 'react-native-elements';
 import OTPScreen from './OTPScreen';
 import VerifyEmail from './VerifyEmail';
+import UserService from '../../services/UserService';
 
 const ForgetPassword = () => {
+  let formRef = React.useRef();
   const [otp, set_opt_screen] = React.useState(false);
+
+  let validateEmail = () => {
+    if (formRef.current) {
+      formRef.current.handleSubmit();
+      if (formRef.current.isValid) {
+        let userService = new UserService();
+        let email = formRef.current.values.email;
+        userService.generate_otp({email}).then((res) => {
+          set_opt_screen(true);
+        });
+      }
+    }
+  };
+
   return (
     <View style={{flex: 1}}>
-      <View style={{flex: 14}}>{!otp ? <VerifyEmail /> : <OTPScreen />}</View>
+      <View style={{flex: 14}}>
+        {!otp ? (
+          <VerifyEmail formRef={formRef} validateEmail={validateEmail} />
+        ) : (
+          <OTPScreen />
+        )}
+      </View>
       <View
         style={[
           styles.floating_button,
@@ -35,7 +57,7 @@ const ForgetPassword = () => {
           size={30}
           reverse
           color={otp ? '#248B86' : '#03C4A1'}
-          onPress={() => set_opt_screen(true)}
+          onPress={validateEmail}
         />
       </View>
     </View>

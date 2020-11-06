@@ -8,13 +8,14 @@ let schema = Yup.object({
   email: Yup.string().required('Email is required').email('Invalid email'),
 });
 
-const VerifyEmail = () => {
+const VerifyEmail = (props) => {
   return (
     <Formik
+      innerRef={props.formRef}
       initialValues={{email: ''}}
       validationSchema={schema}
-      onSubmit={(values) => console.log(values)}>
-      {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
+      onSubmit={(values) => values}>
+      {({handleChange, handleBlur, values, errors, touched}) => (
         <View style={styles.forget_password_container}>
           <View style={styles.icon_container}>
             <Image
@@ -35,7 +36,7 @@ const VerifyEmail = () => {
                 <FontistoIcon
                   name="email"
                   size={30}
-                  color="#93278f"
+                  color="#248B86"
                   style={styles.text_icon}
                 />
                 <TextInput

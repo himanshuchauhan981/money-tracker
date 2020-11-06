@@ -16,6 +16,14 @@ class UserService {
       data: userData,
     });
   };
+
+  generate_otp = (data) => {
+    return axios({
+      method: 'post',
+      url: 'http://127.0.0.1:8080/api/reset',
+      data: data,
+    });
+  };
 }
 
 export default UserService;
