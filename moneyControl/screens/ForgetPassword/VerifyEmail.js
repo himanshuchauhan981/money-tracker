@@ -12,7 +12,7 @@ const VerifyEmail = (props) => {
   return (
     <Formik
       innerRef={props.formRef}
-      initialValues={{email: 'himanshuchauhan0018@gmail.com'}}
+      initialValues={{email: ''}}
       validationSchema={schema}
       onSubmit={(values) => values}>
       {({handleChange, handleBlur, values, errors, touched}) => (
@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginTop: 30,
     flexDirection: 'column',
-    // justifyContent: 'space-between',
   },
   text_box: {
     flexDirection: 'row',

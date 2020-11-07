@@ -2,6 +2,8 @@ import React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import OTPTextInput from 'react-native-otp-textinput';
 import CountDown from 'react-native-countdown-component';
+import {Snackbar} from 'react-native-paper';
+
 import UserService from '../../services/UserService';
 
 const OTPScreen = (props) => {
@@ -44,14 +46,23 @@ const OTPScreen = (props) => {
           tintColor="white"
           offTintColor="white"
         />
-        {error_message ? (
-          <Text style={styles.error_message}>{error_message}</Text>
-        ) : null}
         <Text style={styles.resend_text}>
           If you didn't receive a code!
           <Text style={{fontFamily: 'Arimo-Bold', color: 'blue'}}> Resend</Text>
         </Text>
       </View>
+      <Snackbar
+        visible={error_message !== ''}
+        onDismiss={() => set_error_message('')}
+        action={{
+          label: 'Close',
+          onPress: () => {
+            set_error_message('');
+          },
+        }}
+        duration={10000}>
+        <Text style={{fontSize: 16}}>{error_message}</Text>
+      </Snackbar>
     </View>
   );
 };
@@ -106,13 +117,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'center',
     letterSpacing: 1,
-  },
-  error_message: {
-    fontSize: 18,
-    textAlign: 'center',
-    marginTop: 10,
-    color: 'red',
-    fontWeight: 'bold',
   },
 });
 
