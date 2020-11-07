@@ -12,7 +12,7 @@ const VerifyEmail = (props) => {
   return (
     <Formik
       innerRef={props.formRef}
-      initialValues={{email: ''}}
+      initialValues={{email: 'himanshuchauhan0018@gmail.com'}}
       validationSchema={schema}
       onSubmit={(values) => values}>
       {({handleChange, handleBlur, values, errors, touched}) => (
@@ -31,6 +31,10 @@ const VerifyEmail = (props) => {
             </Text>
           </View>
           <View style={styles.footer}>
+            {props.error ? (
+              <Text style={styles.error}>{props.error}</Text>
+            ) : null}
+
             <View style={styles.text_container}>
               <View style={styles.text_box}>
                 <FontistoIcon
@@ -97,7 +101,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginTop: 30,
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
   },
   text_box: {
     flexDirection: 'row',
@@ -121,6 +125,13 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 12,
     fontWeight: 'bold',
+    letterSpacing: 1,
+  },
+  error: {
+    color: 'red',
+    marginBottom: 10,
+    fontSize: 15,
+    fontFamily: 'Arimo-Bold',
     letterSpacing: 1,
   },
 });

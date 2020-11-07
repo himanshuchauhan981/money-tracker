@@ -7,18 +7,35 @@ import UserService from '../../services/UserService';
 
 const ForgetPassword = () => {
   let formRef = React.useRef();
-  const [otp, set_opt_screen] = React.useState(false);
+  let [otp, set_opt_screen] = React.useState(false);
+  let [expiry, set_expiry] = React.useState('');
+  let [error, setError] = React.useState('');
+  let [email, set_email] = React.useState('');
 
   let validateEmail = () => {
-    if (formRef.current) {
-      formRef.current.handleSubmit();
-      if (formRef.current.isValid) {
-        let userService = new UserService();
-        let email = formRef.current.values.email;
-        userService.generate_otp({email}).then((res) => {
-          set_opt_screen(true);
-        });
+    if (!otp) {
+      if (formRef.current) {
+        formRef.current.handleSubmit();
+        if (formRef.current.isValid) {
+          let userService = new UserService();
+          let params = {type: 'otp_generate'};
+          let email = formRef.current.values.email;
+          userService
+            .reset_password({email}, params)
+            .then((res) => {
+              let current_date = new Date();
+              let diff = Date.parse(res.data.otp_expiry) - current_date;
+
+              set_email(email);
+              set_expiry(diff / 1000);
+              set_opt_screen(true);
+            })
+            .catch((error) => {
+              setError(error.response.data);
+            });
+        }
       }
+    } else {
     }
   };
 
@@ -26,9 +43,13 @@ const ForgetPassword = () => {
     <View style={{flex: 1}}>
       <View style={{flex: 14}}>
         {!otp ? (
-          <VerifyEmail formRef={formRef} validateEmail={validateEmail} />
+          <VerifyEmail
+            formRef={formRef}
+            validateEmail={validateEmail}
+            error={error}
+          />
         ) : (
-          <OTPScreen />
+          <OTPScreen expiry_time={expiry} email={email} />
         )}
       </View>
       <View
@@ -48,17 +69,17 @@ const ForgetPassword = () => {
             color="#248B86"
             onPress={() => set_opt_screen(false)}
           />
-        ) : null}
-
-        <Icon
-          name="chevron-right"
-          type="Entypo"
-          raised
-          size={30}
-          reverse
-          color={otp ? '#248B86' : '#03C4A1'}
-          onPress={validateEmail}
-        />
+        ) : (
+          <Icon
+            name="chevron-right"
+            type="Entypo"
+            raised
+            size={30}
+            reverse
+            color={otp ? '#248B86' : '#03C4A1'}
+            onPress={validateEmail}
+          />
+        )}
       </View>
     </View>
   );

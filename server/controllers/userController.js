@@ -2,8 +2,8 @@ const { userHandler } = require('../handlers');
 
 const user = {
 	save_new_user: async (req, res) => {
-		let userData = req.body;
-		let response = await userHandler.save_new_user(userData);
+		let user_data = req.body;
+		let response = await userHandler.save_new_user(user_data);
 		res.status(response.status).send(response.data);
 	},
 
@@ -14,10 +14,17 @@ const user = {
 		res.status(response.status).send(response.data);
 	},
 
-	generate_otp: async (req, res) => {
-		let email = req.body.email;
-		let response = await userHandler.generate_otp(email);
-		res.status(response.status).send(response.msg);
+	reset_password: async (req, res) => {
+		let query = req.query.type;
+		if (query === 'otp_generate') {
+			let email = req.body.email;
+			let response = await userHandler.generate_otp(email);
+			res.status(response.status).send(response.msg);
+		} else {
+			let user_data = req.body;
+			let response = await userHandler.verify_otp(user_data);
+			res.status(response.status).send(response.data);
+		}
 	},
 };
 

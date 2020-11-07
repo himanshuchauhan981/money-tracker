@@ -3,6 +3,7 @@ const firebase = require('firebase').default;
 const admin = require('firebase-admin');
 
 const { sender, transporter } = require('../config/mail');
+const { auth } = require('firebase-admin');
 
 const user = {
 	save_new_user: async (userData) => {
@@ -49,6 +50,9 @@ const user = {
 	generate_otp: async (email) => {
 		const secret = 'KVKFKRCPNZQUYMLXOVYDSQKJKZDTSRLD';
 		const token = authenticator.generate(secret);
+		console.log(typeof token);
+		console.log(token);
+		console.log(authenticator.verify({ token, secret }));
 		let current_date = new Date();
 		current_date.setMinutes(current_date.getMinutes() + 10);
 		let mailOptions = {
@@ -84,6 +88,30 @@ const user = {
 			if (error.code === 'auth/user-not-found') {
 				return { status: 404, msg: 'Provided email Id is not registered' };
 			}
+		}
+	},
+
+	verify_otp: async (user_data) => {
+		const secret = 'KVKFKRCPNZQUYMLXOVYDSQKJKZDTSRLD';
+		let userDetails = await admin.auth().getUserByEmail(user_data.email);
+		let uid = userDetails.uid;
+		let userSnapshot = await firebase
+			.firestore()
+			.collection('users')
+			.where('userId', '==', uid)
+			.get();
+		let data = userSnapshot.docs[0].data();
+		let stored_otp = data.otp.value;
+		let expiry_time = data.otp.expiry.seconds;
+		let current_date = new Date();
+		if (stored_otp === user_data.otp) {
+			if (expiry_time > current_date.getTime() / 1000) {
+				return { status: 200, data: { msg: 'OTP verified' } };
+			} else {
+				return { status: 200, data: { msg: 'OTP expired' } };
+			}
+		} else {
+			return { status: 200, data: { msg: 'Invalid OTP' } };
 		}
 	},
 };

@@ -1,8 +1,22 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import OTPTextInput from 'react-native-otp-textinput';
+import CountDown from 'react-native-countdown-component';
+import UserService from '../../services/UserService';
 
-const OTPScreen = () => {
+const OTPScreen = (props) => {
+  let [error_message, set_error_message] = React.useState('');
+  let setOtpValues = (otp) => {
+    if (otp.length === 6) {
+      let userService = new UserService();
+      let values = {otp: otp, email: props.email};
+      let params = {type: 'verify_otp'};
+
+      userService.reset_password(values, params).then((res) => {
+        set_error_message(res.data.msg);
+      });
+    }
+  };
   return (
     <View style={styles.otp_container}>
       <View style={styles.otp_header}>
@@ -18,12 +32,21 @@ const OTPScreen = () => {
         </Text>
       </View>
       <View style={styles.otp_footer}>
+        <CountDown
+          until={props.expiry_time}
+          size={20}
+          timeToShow={['M', 'S']}
+        />
         <OTPTextInput
+          handleTextChange={setOtpValues}
           inputCount={6}
           textInputStyle={styles.otp_text_input}
           tintColor="white"
           offTintColor="white"
         />
+        {error_message ? (
+          <Text style={styles.error_message}>{error_message}</Text>
+        ) : null}
         <Text style={styles.resend_text}>
           If you didn't receive a code!
           <Text style={{fontFamily: 'Arimo-Bold', color: 'blue'}}> Resend</Text>
@@ -80,9 +103,16 @@ const styles = StyleSheet.create({
   resend_text: {
     marginTop: 20,
     fontFamily: 'Arimo-Regular',
-    fontSize: 18,
+    fontSize: 15,
     textAlign: 'center',
     letterSpacing: 1,
+  },
+  error_message: {
+    fontSize: 18,
+    textAlign: 'center',
+    marginTop: 10,
+    color: 'red',
+    fontWeight: 'bold',
   },
 });
 

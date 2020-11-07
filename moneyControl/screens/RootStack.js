@@ -24,7 +24,7 @@ const DrawerStack = () => {
 };
 
 const RootStackScreen = ({navigation}) => (
-  <RootStack.Navigator initialRouteName="Initial">
+  <RootStack.Navigator initialRouteName="ForgetPassword">
     <RootStack.Screen
       name="Initial"
       component={Initial}
