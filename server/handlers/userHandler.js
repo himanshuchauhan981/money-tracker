@@ -1,9 +1,40 @@
 const { authenticator } = require('otplib');
-const firebase = require('firebase').default;
-const admin = require('firebase-admin');
 
+const { userModel } = require('../models');
 const { sender, transporter } = require('../config/mail');
-const { auth } = require('firebase-admin');
+
+let create_one_time_password = () => {
+	let secret = process.env.OTP_SECRET;
+	let otp = authenticator.generate(secret);
+	return otp;
+};
+
+let send_otp_email = (otp, email) => {
+	let current_date = new Date();
+	current_date.setMinutes(current_date.getMinutes() + 10);
+	let mailOptions = {
+		to: email,
+		from: sender,
+		subject: 'Password reset email',
+		text: `OTP is ${otp}`,
+	};
+	transporter.sendMail(mailOptions);
+	return current_date;
+};
+
+let verify_otp = (stored_otp, new_otp, expiry_time) => {
+	let current_date = new Date();
+
+	if (stored_otp === new_otp) {
+		if (expiry_time > current_date.getTime() / 1000) {
+			return { status: 200, data: { msg: 'OTP verified' } };
+		} else {
+			return { status: 200, data: { msg: 'OTP expired' } };
+		}
+	} else {
+		return { status: 200, data: { msg: 'Invalid OTP' } };
+	}
+};
 
 const user = {
 	save_new_user: async (userData) => {
@@ -11,11 +42,8 @@ const user = {
 		let password = userData.password;
 
 		try {
-			let credentials = await firebase
-				.auth()
-				.createUserWithEmailAndPassword(email, password);
-			let db = firebase.firestore();
-			await db.collection('users').add({
+			let credentials = await userModel.create(email, password);
+			await userModel.add_user({
 				mobileNumber: userData.mobile_number,
 				name: userData.name,
 				userId: credentials.user.uid,
@@ -28,11 +56,10 @@ const user = {
 			}
 		}
 	},
+
 	login_user: async (email, password) => {
 		try {
-			let credentials = await firebase
-				.auth()
-				.signInWithEmailAndPassword(email, password);
+			let credentials = await userModel.login_user(email, password);
 			let token = await credentials.user.getIdToken();
 			return { status: 200, data: { token } };
 		} catch (error) {
@@ -48,37 +75,14 @@ const user = {
 	},
 
 	generate_otp: async (email) => {
-		const secret = 'KVKFKRCPNZQUYMLXOVYDSQKJKZDTSRLD';
-		const token = authenticator.generate(secret);
-		console.log(typeof token);
-		console.log(token);
-		console.log(authenticator.verify({ token, secret }));
-		let current_date = new Date();
-		current_date.setMinutes(current_date.getMinutes() + 10);
-		let mailOptions = {
-			to: email,
-			from: sender,
-			subject: 'Examiner confirmation mail',
-			text: `OTP is ${token}`,
-		};
-		transporter.sendMail(mailOptions);
+		let otp = create_one_time_password();
+		let current_date = send_otp_email(otp, email);
 		try {
-			let userDetails = await admin.auth().getUserByEmail(email);
-			let uid = userDetails.uid;
-			let userSnapshot = await firebase
-				.firestore()
-				.collection('users')
-				.where('userId', '==', uid)
-				.get();
+			let userDetails = await userModel.find_by_email_id(email);
+
+			let userSnapshot = await userModel.find_by_user_id(userDetails.uid);
 			userSnapshot.docs.forEach(async (doc) => {
-				await firebase
-					.firestore()
-					.collection('users')
-					.doc(doc.id)
-					.set(
-						{ otp: { value: token, expiry: current_date } },
-						{ merge: true }
-					);
+				await userModel.add_otp(doc.id, otp, current_date);
 			});
 			return {
 				status: 200,
@@ -92,27 +96,18 @@ const user = {
 	},
 
 	verify_otp: async (user_data) => {
-		const secret = 'KVKFKRCPNZQUYMLXOVYDSQKJKZDTSRLD';
-		let userDetails = await admin.auth().getUserByEmail(user_data.email);
-		let uid = userDetails.uid;
-		let userSnapshot = await firebase
-			.firestore()
-			.collection('users')
-			.where('userId', '==', uid)
-			.get();
+		let userDetails = await userModel.find_by_email_id(user_data.email);
+
+		let userSnapshot = await userModel.find_by_user_id(
+			userDetails.uid,
+			userDetails
+		);
 		let data = userSnapshot.docs[0].data();
+
 		let stored_otp = data.otp.value;
 		let expiry_time = data.otp.expiry.seconds;
-		let current_date = new Date();
-		if (stored_otp === user_data.otp) {
-			if (expiry_time > current_date.getTime() / 1000) {
-				return { status: 200, data: { msg: 'OTP verified' } };
-			} else {
-				return { status: 200, data: { msg: 'OTP expired' } };
-			}
-		} else {
-			return { status: 200, data: { msg: 'Invalid OTP' } };
-		}
+		let response = verify_otp(stored_otp, user_data.otp, expiry_time);
+		return response;
 	},
 };
 
