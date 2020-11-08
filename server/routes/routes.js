@@ -10,5 +10,7 @@ module.exports = () => {
 
 	router.post('/password', userController.reset_password);
 
+	router.patch('/password', userController.update_password);
+
 	return router;
 };

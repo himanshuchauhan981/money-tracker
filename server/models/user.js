@@ -39,6 +39,10 @@ class Users {
 			{ merge: true }
 		);
 	};
+
+	update_password = (uid, data) => {
+		return this.admin_auth.updateUser(uid, data);
+	};
 }
 
 module.exports = new Users();

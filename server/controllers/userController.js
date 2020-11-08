@@ -26,6 +26,14 @@ const user = {
 			res.status(response.status).send(response.data);
 		}
 	},
+
+	update_password: async (req, res) => {
+		let email = req.query.email;
+		let password = req.body.new_password;
+
+		let response = await userHandler.update_password(email, password);
+		res.status(response.status).send(response.data);
+	},
 };
 
 module.exports = user;

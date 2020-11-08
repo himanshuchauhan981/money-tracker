@@ -2,6 +2,7 @@ const { authenticator } = require('otplib');
 
 const { userModel } = require('../models');
 const { sender, transporter } = require('../config/mail');
+const { reset_password } = require('../controllers/userController');
 
 let create_one_time_password = () => {
 	let secret = process.env.OTP_SECRET;
@@ -108,6 +109,12 @@ const user = {
 		let expiry_time = data.otp.expiry.seconds;
 		let response = verify_otp(stored_otp, user_data.otp, expiry_time);
 		return response;
+	},
+
+	update_password: async (email, password) => {
+		let user_credential = await userModel.find_by_email_id(email);
+		await userModel.update_password(user_credential.uid, { password });
+		return { status: 200, data: { msg: 'Password changed successfully' } };
 	},
 };
 
