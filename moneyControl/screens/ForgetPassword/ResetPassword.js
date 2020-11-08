@@ -5,6 +5,8 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 
+import UserService from '../../services/UserService';
+
 let schema = Yup.object({
   new_password: Yup.string().required('Required field'),
   confirm_password: Yup.string()
@@ -12,12 +14,18 @@ let schema = Yup.object({
     .oneOf([Yup.ref('new_password'), null], 'Password must match'),
 });
 
-const ResetPassword = () => {
+const ResetPassword = (props) => {
+  let update_password = (values) => {
+    let userService = new UserService();
+    let email = props.route.params.email;
+    userService.update_password(values, {email}).then((res) => {});
+  };
+
   return (
     <Formik
       validationSchema={schema}
-      initialValues={{new_password: '', confirm_password: ''}}
-      onSubmit={(values) => console.log(values)}>
+      initialValues={{new_password: 'sample', confirm_password: 'sample'}}
+      onSubmit={(values) => update_password(values)}>
       {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
         <View style={styles.password_container}>
           <View style={styles.password_header}>

@@ -113,7 +113,7 @@ class Login extends React.Component {
               <View style={styles.text_container}>
                 <View style={styles.text_box}>
                   <FontistoIcon
-                    name="email"
+                    name="key"
                     size={30}
                     color="#93278f"
                     style={{alignSelf: 'center'}}

@@ -3,10 +3,12 @@ import {View, Text, StyleSheet, Image} from 'react-native';
 import OTPTextInput from 'react-native-otp-textinput';
 import CountDown from 'react-native-countdown-component';
 import {Snackbar} from 'react-native-paper';
+import {useNavigation} from '@react-navigation/native';
 
 import UserService from '../../services/UserService';
 
 const OTPScreen = (props) => {
+  let navigation = useNavigation();
   let [error_message, set_error_message] = React.useState('');
   let setOtpValues = (otp) => {
     if (otp.length === 6) {
@@ -15,7 +17,11 @@ const OTPScreen = (props) => {
       let params = {type: 'verify_otp'};
 
       userService.reset_password(values, params).then((res) => {
-        set_error_message(res.data.msg);
+        if (res.data.msg === 'OTP verified') {
+          navigation.navigate('ResetPassword', {email: props.email});
+        } else {
+          set_error_message(res.data.msg);
+        }
       });
     }
   };

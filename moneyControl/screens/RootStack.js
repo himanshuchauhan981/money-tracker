@@ -8,6 +8,7 @@ import Signup from './Signup';
 import DrawerContent from './DrawerContent';
 import Home from './Home';
 import ForgetPassword from './ForgetPassword/ForgetPassword';
+import ResetPassword from './ForgetPassword/ResetPassword';
 
 const Drawer = createDrawerNavigator();
 const RootStack = createStackNavigator();
@@ -23,8 +24,8 @@ const DrawerStack = () => {
   );
 };
 
-const RootStackScreen = ({navigation}) => (
-  <RootStack.Navigator initialRouteName="ForgetPassword">
+const RootStackScreen = () => (
+  <RootStack.Navigator initialRouteName="Initial">
     <RootStack.Screen
       name="Initial"
       component={Initial}
@@ -48,6 +49,11 @@ const RootStackScreen = ({navigation}) => (
     <RootStack.Screen
       name="ForgetPassword"
       component={ForgetPassword}
+      options={{headerShown: false}}
+    />
+    <RootStack.Screen
+      name="ResetPassword"
+      component={ResetPassword}
       options={{headerShown: false}}
     />
   </RootStack.Navigator>

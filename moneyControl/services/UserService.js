@@ -25,6 +25,15 @@ class UserService {
       params: params,
     });
   };
+
+  update_password = (data, params) => {
+    return axios({
+      method: 'patch',
+      url: 'http://127.0.0.1:8080/api/password',
+      data: data,
+      params: params,
+    });
+  };
 }
 
 export default UserService;
