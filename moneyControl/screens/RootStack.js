@@ -9,6 +9,7 @@ import DrawerContent from './DrawerContent';
 import Home from './Home';
 import ForgetPassword from './ForgetPassword/ForgetPassword';
 import ResetPassword from './ForgetPassword/ResetPassword';
+import PasswordSuccess from './ForgetPassword/PasswordSuccess';
 
 const Drawer = createDrawerNavigator();
 const RootStack = createStackNavigator();
@@ -54,6 +55,11 @@ const RootStackScreen = () => (
     <RootStack.Screen
       name="ResetPassword"
       component={ResetPassword}
+      options={{headerShown: false}}
+    />
+    <RootStack.Screen
+      name="PasswordSuccess"
+      component={PasswordSuccess}
       options={{headerShown: false}}
     />
   </RootStack.Navigator>

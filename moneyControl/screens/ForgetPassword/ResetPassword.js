@@ -4,6 +4,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
+import {useNavigation} from '@react-navigation/native';
 
 import UserService from '../../services/UserService';
 
@@ -15,10 +16,13 @@ let schema = Yup.object({
 });
 
 const ResetPassword = (props) => {
+  let navigation = useNavigation();
   let update_password = (values) => {
     let userService = new UserService();
     let email = props.route.params.email;
-    userService.update_password(values, {email}).then((res) => {});
+    userService.update_password(values, {email}).then((res) => {
+      navigation.navigate('PasswordSuccess');
+    });
   };
 
   return (
