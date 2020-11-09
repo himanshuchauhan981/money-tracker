@@ -107,10 +107,10 @@ const DrawerContent = (props) => {
           <Text style={styles.overlay_error}>
             User, you are signing out of your account on this device.
           </Text>
-          <View
-            style={styles.overlay_button_container}
-            onStartShouldSetResponder={signout_user}>
-            <View style={styles.overlay_button}>
+          <View style={styles.overlay_button_container}>
+            <View
+              style={styles.overlay_button}
+              onStartShouldSetResponder={signout_user}>
               <Text style={styles.overlay_button_text}>SignOut</Text>
             </View>
             <View
