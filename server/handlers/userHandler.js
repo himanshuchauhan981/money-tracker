@@ -64,7 +64,10 @@ const user = {
 			let token = await credentials.user.getIdToken();
 			return { status: 200, data: { token } };
 		} catch (error) {
-			if (error.code === 'auth/wrong-password') {
+			if (
+				error.code === 'auth/wrong-password' ||
+				error.code === 'auth/user-not-found'
+			) {
 				return { status: 401, data: { msg: 'Wrong credentials' } };
 			} else if (error.code === 'auth/too-many-requests') {
 				return {
