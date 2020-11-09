@@ -160,9 +160,7 @@ class Login extends React.Component {
               <Text style={styles.account}>
                 Don't have an account ?{' '}
                 <Text
-                  onPress={() =>
-                    this.props.navigation.replace('ForgetPassword')
-                  }
+                  onPress={() => this.props.navigation.replace('Signup')}
                   style={styles.signUp_text}>
                   SIGN UP
                 </Text>
