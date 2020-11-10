@@ -17,6 +17,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import schema from '../schema/loginSchema';
 import UserService from '../services/UserService';
+import Spinner from '../components/Spinner';
 
 class Login extends React.Component {
   constructor() {
@@ -25,6 +26,7 @@ class Login extends React.Component {
       animation_login: new Animated.Value(width - 40),
       enable: true,
       snackbar: {show: false, msg: ''},
+      spinner: false,
     };
   }
 
@@ -47,6 +49,7 @@ class Login extends React.Component {
       this.setState(
         {
           enable: false,
+          spinner: false,
         },
         () => this.props.navigation.push('Home'),
       );
@@ -73,7 +76,9 @@ class Login extends React.Component {
       <Formik
         validationSchema={schema}
         initialValues={{email: '', password: ''}}
-        onSubmit={(values) => this.login_user(values)}>
+        onSubmit={(values) =>
+          this.setState({spinner: true}, () => this.login_user(values))
+        }>
         {({
           handleChange,
           handleBlur,
@@ -83,6 +88,7 @@ class Login extends React.Component {
           touched,
         }) => (
           <View style={styles.container}>
+            <Spinner spin={this.state.spinner} />
             <View style={styles.header}>
               <StatusBar barStyle="light-content" />
               <Text style={styles.heading}>Welcome!</Text>

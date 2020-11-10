@@ -12,11 +12,13 @@ const OTPScreen = (props) => {
   let [error_message, set_error_message] = React.useState('');
   let setOtpValues = (otp) => {
     if (otp.length === 6) {
+      props.set_spinner(true);
       let userService = new UserService();
       let values = {otp: otp, email: props.email};
       let params = {type: 'verify_otp'};
 
       userService.reset_password(values, params).then((res) => {
+        props.set_spinner(false);
         if (res.data.msg === 'OTP verified') {
           navigation.navigate('ResetPassword', {email: props.email});
         } else {

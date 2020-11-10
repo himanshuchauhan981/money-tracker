@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 import {useNavigation} from '@react-navigation/native';
 
 import UserService from '../../services/UserService';
+import Spinner from '../../components/Spinner';
 
 let schema = Yup.object({
   new_password: Yup.string().required('Required field'),
@@ -17,10 +18,14 @@ let schema = Yup.object({
 
 const ResetPassword = (props) => {
   let navigation = useNavigation();
+  let [spinner, set_spinner] = React.useState(false);
+
   let update_password = (values) => {
+    set_spinner(true);
     let userService = new UserService();
     let email = props.route.params.email;
     userService.update_password(values, {email}).then((res) => {
+      set_spinner(false);
       navigation.navigate('PasswordSuccess');
     });
   };
@@ -28,10 +33,11 @@ const ResetPassword = (props) => {
   return (
     <Formik
       validationSchema={schema}
-      initialValues={{new_password: 'sample', confirm_password: 'sample'}}
+      initialValues={{new_password: '', confirm_password: ''}}
       onSubmit={(values) => update_password(values)}>
       {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
         <View style={styles.password_container}>
+          <Spinner spin={spinner} />
           <View style={styles.password_header}>
             <Image
               source={require('../../assets/images/reset_password.png')}

@@ -16,10 +16,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import schema from '../schema/signupSchema';
 import UserService from '../services/UserService';
+import Spinner from '../components/Spinner';
 
 const Signup = (props) => {
   let [errorMessage, setMessage] = React.useState('');
   let [visible, setVisible] = React.useState(false);
+  let [spinner, set_spinner] = React.useState(false);
 
   let toggleSnackBar = () => setVisible(!visible);
 
@@ -27,14 +29,16 @@ const Signup = (props) => {
 
   const signUpUser = (userData) => {
     let userService = new UserService();
-
+    set_spinner(!spinner);
     userService
       .createNewUser(userData)
       .then(async (res) => {
         await AsyncStorage.setItem('token', res.data.token);
         props.navigation.replace('Home');
+        set_spinner(true);
       })
       .catch((err) => {
+        set_spinner(false);
         setMessage(err.response.data.msg);
         toggleSnackBar();
       });
@@ -53,6 +57,7 @@ const Signup = (props) => {
       onSubmit={(values) => signUpUser(values)}>
       {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
         <SafeAreaView style={styles.container}>
+          <Spinner spin={spinner} />
           <KeyboardAvoidingView behavior="padding" enabled>
             <ScrollView>
               <View style={styles.header}>

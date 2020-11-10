@@ -1,9 +1,11 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Icon} from 'react-native-elements';
+
 import OTPScreen from './OTPScreen';
 import VerifyEmail from './VerifyEmail';
 import UserService from '../../services/UserService';
+import Spinner from '../../components/Spinner';
 
 const ForgetPassword = () => {
   let formRef = React.useRef();
@@ -11,8 +13,10 @@ const ForgetPassword = () => {
   let [expiry, set_expiry] = React.useState('');
   let [error, setError] = React.useState('');
   let [email, set_email] = React.useState('');
+  let [spinner, set_spinner] = React.useState(false);
 
   let validateEmail = () => {
+    set_spinner(true);
     if (!otp) {
       if (formRef.current) {
         formRef.current.handleSubmit();
@@ -25,12 +29,13 @@ const ForgetPassword = () => {
             .then((res) => {
               let current_date = new Date();
               let diff = Date.parse(res.data.otp_expiry) - current_date;
-
+              set_spinner(false);
               set_email(email);
               set_expiry(diff / 1000);
               set_opt_screen(true);
             })
             .catch((error) => {
+              set_spinner(false);
               setError(error.response.data);
             });
         }
@@ -41,6 +46,7 @@ const ForgetPassword = () => {
 
   return (
     <View style={{flex: 1}}>
+      <Spinner spin={spinner} />
       <View style={{flex: 14}}>
         {!otp ? (
           <VerifyEmail
@@ -49,7 +55,11 @@ const ForgetPassword = () => {
             error={error}
           />
         ) : (
-          <OTPScreen expiry_time={expiry} email={email} />
+          <OTPScreen
+            expiry_time={expiry}
+            email={email}
+            set_spinner={set_spinner}
+          />
         )}
       </View>
       <View

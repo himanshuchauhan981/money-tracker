@@ -12,7 +12,7 @@ const VerifyEmail = (props) => {
   return (
     <Formik
       innerRef={props.formRef}
-      initialValues={{email: 'himanshuchauhan0018@gmail.com'}}
+      initialValues={{email: ''}}
       validationSchema={schema}
       onSubmit={(values) => values}>
       {({handleChange, handleBlur, values, errors, touched}) => (
