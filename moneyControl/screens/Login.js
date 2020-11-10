@@ -10,6 +10,7 @@ import {
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
+import EntypoIcon from 'react-native-vector-icons/Entypo';
 import * as Animatable from 'react-native-animatable';
 import {Formik} from 'formik';
 import {Snackbar} from 'react-native-paper';
@@ -27,17 +28,18 @@ class Login extends React.Component {
       enable: true,
       snackbar: {show: false, msg: ''},
       spinner: false,
+      secure_password: true,
     };
   }
 
-  toggleSnackBar = (show, msg) => {
+  toggle_snackbar = (show, msg) => {
     this.setState(
       {snackbar: {show: show, msg: msg}},
       () => this.state.snackbar,
     );
   };
 
-  animateButton = async (token) => {
+  animate_button = async (token) => {
     await AsyncStorage.setItem('token', token);
     Animated.timing(this.state.animation_login, {
       toValue: 40,
@@ -62,12 +64,18 @@ class Login extends React.Component {
     userService
       .loginUser(userData)
       .then((res) => {
-        this.animateButton(res.data.token);
+        this.animate_button(res.data.token);
       })
       .catch((err) => {
-        this.toggleSnackBar(true, err.response.data.msg);
+        this.toggle_snackbar(true, err.response.data.msg);
       });
   }
+
+  change_password_text = () => {
+    this.setState((prevState) => ({
+      secure_password: !prevState.secure_password,
+    }));
+  };
 
   render() {
     const width = this.state.animation_login;
@@ -118,20 +126,29 @@ class Login extends React.Component {
               </View>
               <View style={styles.text_container}>
                 <View style={styles.text_box}>
-                  <FontistoIcon
-                    name="key"
-                    size={30}
-                    color="#93278f"
-                    style={{alignSelf: 'center'}}
-                  />
-                  <TextInput
-                    secureTextEntry
-                    placeholder="Password"
-                    style={{marginLeft: 10, flexGrow: 1}}
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
-                    value={values.password}
-                  />
+                  <View style={styles.leading_icon}>
+                    <FontistoIcon name="key" size={30} color="#93278f" />
+                  </View>
+                  <View style={{flex: 8, alignSelf: 'stretch'}}>
+                    <TextInput
+                      secureTextEntry={this.state.secure_password}
+                      placeholder="Password"
+                      style={{paddingLeft: 10, flexGrow: 1}}
+                      onChangeText={handleChange('password')}
+                      onBlur={handleBlur('password')}
+                      value={values.password}
+                    />
+                  </View>
+                  <View style={styles.trailing_icon}>
+                    <EntypoIcon
+                      name={
+                        this.state.secure_password ? 'eye' : 'eye-with-line'
+                      }
+                      size={30}
+                      color="#93278F"
+                      onPress={this.change_password_text}
+                    />
+                  </View>
                 </View>
                 {touched.password && errors.password ? (
                   <Text style={styles.error_message}>* {errors.password}</Text>
@@ -175,11 +192,11 @@ class Login extends React.Component {
             <View style={{margin: 20}}>
               <Snackbar
                 visible={this.state.snackbar.show}
-                onDismiss={() => this.toggleSnackBar(false)}
+                onDismiss={() => this.toggle_snackbar(false)}
                 action={{
                   label: 'Close',
                   onPress: () => {
-                    this.toggleSnackBar(false);
+                    this.toggle_snackbar(false);
                   },
                 }}
                 duration={10000}>
@@ -270,6 +287,15 @@ const styles = StyleSheet.create({
     color: '#93278f',
     marginTop: 10,
     textAlign: 'right',
+  },
+  leading_icon: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignSelf: 'center',
+  },
+  trailing_icon: {
+    flex: 1,
+    alignSelf: 'center',
   },
 });
 
