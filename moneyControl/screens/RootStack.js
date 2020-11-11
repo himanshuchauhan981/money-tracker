@@ -10,6 +10,7 @@ import Home from './Home';
 import ForgetPassword from './ForgetPassword/ForgetPassword';
 import ResetPassword from './ForgetPassword/ResetPassword';
 import PasswordSuccess from './ForgetPassword/PasswordSuccess';
+import ExpenIncomeScreen from './AddExpense/ExpenseIncomeScreen';
 
 const Drawer = createDrawerNavigator();
 const RootStack = createStackNavigator();
@@ -26,7 +27,7 @@ const DrawerStack = () => {
 };
 
 const RootStackScreen = () => (
-  <RootStack.Navigator initialRouteName="Initial">
+  <RootStack.Navigator initialRouteName="Add">
     <RootStack.Screen
       name="Initial"
       component={Initial}
@@ -62,6 +63,7 @@ const RootStackScreen = () => (
       component={PasswordSuccess}
       options={{headerShown: false}}
     />
+    <RootStack.Screen name="Add" component={ExpenIncomeScreen} />
   </RootStack.Navigator>
 );
 

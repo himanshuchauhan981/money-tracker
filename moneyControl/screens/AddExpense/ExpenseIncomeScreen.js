@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import Expense from './Expense';
 
 const ExpenseIncomeScreen = () => {
   let [button, set_button] = React.useState('expense');
@@ -44,9 +45,7 @@ const ExpenseIncomeScreen = () => {
           </Text>
         </View>
       </View>
-      <View>
-        {button === 'expense' ? <Text>Expense</Text> : <Text>Income</Text>}
-      </View>
+      <View>{button === 'expense' ? <Expense /> : <Text>Income</Text>}</View>
     </View>
   );
 };

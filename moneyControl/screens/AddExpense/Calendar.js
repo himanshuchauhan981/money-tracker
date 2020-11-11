@@ -1,18 +1,13 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {Text, View, TouchableOpacity} from 'react-native';
 import {Calendar} from 'react-native-calendars';
 import {Divider, Overlay} from 'react-native-elements';
-import {TouchableHighlight} from 'react-native-gesture-handler';
 
-const Expense = () => {
-  let [visibleModal, setModal] = React.useState(false);
-
-  let hideModal = () => setModal(false);
-
+const CustomCalendar = (props) => {
   return (
     <Overlay
-      isVisible={visibleModal}
-      onBackdropPress={hideModal}
+      isVisible={props.visible}
+      onBackdropPress={props.closeModal}
       overlayStyle={{padding: 0}}>
       <View>
         <View style={{paddingVertical: 10, backgroundColor: '#CC38C6'}}>
@@ -65,7 +60,8 @@ const Expense = () => {
         <View style={{paddingHorizontal: 15}}>
           <Calendar />
         </View>
-        <TouchableHighlight
+        <TouchableOpacity
+          onPress={props.closeModal}
           style={{paddingVertical: 14, backgroundColor: '#E7E1E1'}}>
           <Text
             style={{
@@ -76,10 +72,10 @@ const Expense = () => {
             }}>
             Done
           </Text>
-        </TouchableHighlight>
+        </TouchableOpacity>
       </View>
     </Overlay>
   );
 };
 
-export default Expense;
+export default CustomCalendar;
