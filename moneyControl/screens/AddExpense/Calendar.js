@@ -7,7 +7,7 @@ const CustomCalendar = (props) => {
   return (
     <Overlay
       isVisible={props.visible}
-      onBackdropPress={props.closeModal}
+      onBackdropPress={props.close_modal}
       overlayStyle={{padding: 0}}>
       <View>
         <View style={{paddingVertical: 10, backgroundColor: '#CC38C6'}}>
@@ -61,7 +61,7 @@ const CustomCalendar = (props) => {
           <Calendar />
         </View>
         <TouchableOpacity
-          onPress={props.closeModal}
+          onPress={props.close_modal}
           style={{paddingVertical: 14, backgroundColor: '#E7E1E1'}}>
           <Text
             style={{

@@ -1,12 +1,17 @@
 import React from 'react';
 import {View} from 'react-native';
 import {List} from 'react-native-paper';
+
 import Calendar from './Calendar';
+import Category from './Category';
 
 const Expense = () => {
   let [visibleModal, setModal] = React.useState(false);
+  let [visibleCategory, setCategory] = React.useState(true);
 
-  let closeModal = () => setModal(false);
+  let close_modal = () => setModal(false);
+
+  let close_category_modal = () => setCategory(false);
   return (
     <View>
       <List.Item
@@ -16,13 +21,15 @@ const Expense = () => {
       />
       <List.Item
         left={(props) => <List.Icon {...props} icon="view-list" />}
-        title="category"
+        title="Category"
+        onPress={() => setCategory(true)}
       />
       <List.Item
         left={(props) => <List.Icon {...props} icon="note-text-outline" />}
         title="Add a note"
       />
-      <Calendar visible={visibleModal} closeModal={closeModal} />
+      <Calendar visible={visibleModal} close_modal={close_modal} />
+      <Category visible={visibleCategory} close_modal={close_category_modal} />
     </View>
   );
 };
