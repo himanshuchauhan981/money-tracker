@@ -26,7 +26,14 @@ class Home extends React.Component {
               letterSpacing: 1,
             },
           }}
-          rightComponent={<Ionicons name="add" color="white" size={35} />}
+          rightComponent={
+            <Ionicons
+              name="add"
+              color="white"
+              size={35}
+              onPress={() => this.props.navigation.push('Add')}
+            />
+          }
         />
         <Text>Hello</Text>
       </View>
