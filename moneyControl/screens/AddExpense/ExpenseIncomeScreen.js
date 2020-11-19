@@ -1,11 +1,20 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {Appbar} from 'react-native-paper';
+import {useNavigation} from '@react-navigation/native';
+
 import Expense from './Expense';
 
 const ExpenseIncomeScreen = () => {
+  let navigation = useNavigation();
   let [button, set_button] = React.useState('expense');
   return (
     <View style={styles.container}>
+      <Appbar.Header statusBarHeight={30}>
+        <Appbar.BackAction onPress={() => navigation.goBack()} />
+        <Appbar.Content title="Add" />
+        <Appbar.Action icon="calculator" />
+      </Appbar.Header>
       <View style={styles.button_container}>
         <View
           onStartShouldSetResponder={() => set_button('expense')}

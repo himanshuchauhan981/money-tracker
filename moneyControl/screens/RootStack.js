@@ -1,7 +1,6 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import EntypoIcon from 'react-native-vector-icons/Entypo';
 
 import Initial from './initial';
 import Login from './Login';
@@ -27,8 +26,8 @@ const DrawerStack = () => {
   );
 };
 
-const RootStackScreen = (props) => (
-  <RootStack.Navigator initialRouteName="Add">
+const RootStackScreen = () => (
+  <RootStack.Navigator initialRouteName="Home">
     <RootStack.Screen
       name="Initial"
       component={Initial}
@@ -67,28 +66,7 @@ const RootStackScreen = (props) => (
     <RootStack.Screen
       name="Add"
       component={ExpenIncomeScreen}
-      options={{
-        headerLeft: () => (
-          <EntypoIcon
-            name="chevron-left"
-            size={30}
-            color="white"
-            onPress={() => console.log(props)}
-          />
-        ),
-        headerBackTitle: 'Back',
-        headerLeftContainerStyle: {
-          marginLeft: 10,
-        },
-        title: 'Add',
-        headerTitleAlign: 'center',
-        headerStyle: {
-          backgroundColor: '#93278F',
-        },
-        headerTitleStyle: {
-          color: 'white',
-        },
-      }}
+      options={{headerShown: false}}
     />
   </RootStack.Navigator>
 );
