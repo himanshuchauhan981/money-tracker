@@ -11,6 +11,7 @@ import ForgetPassword from './ForgetPassword/ForgetPassword';
 import ResetPassword from './ForgetPassword/ResetPassword';
 import PasswordSuccess from './ForgetPassword/PasswordSuccess';
 import ExpenIncomeScreen from './AddExpense/ExpenseIncomeScreen';
+import Calculator from './Calculator/Calculator';
 
 const Drawer = createDrawerNavigator();
 const RootStack = createStackNavigator();
@@ -27,7 +28,7 @@ const DrawerStack = () => {
 };
 
 const RootStackScreen = () => (
-  <RootStack.Navigator initialRouteName="Home">
+  <RootStack.Navigator initialRouteName="Calculator">
     <RootStack.Screen
       name="Initial"
       component={Initial}
@@ -66,6 +67,11 @@ const RootStackScreen = () => (
     <RootStack.Screen
       name="Add"
       component={ExpenIncomeScreen}
+      options={{headerShown: false}}
+    />
+    <RootStack.Screen
+      name="Calculator"
+      component={Calculator}
       options={{headerShown: false}}
     />
   </RootStack.Navigator>

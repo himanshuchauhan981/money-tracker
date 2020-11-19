@@ -10,10 +10,13 @@ const ExpenseIncomeScreen = () => {
   let [button, set_button] = React.useState('expense');
   return (
     <View style={styles.container}>
-      <Appbar.Header statusBarHeight={30}>
+      <Appbar.Header statusBarHeight={30} style={styles.appbar_color}>
         <Appbar.BackAction onPress={() => navigation.goBack()} />
         <Appbar.Content title="Add" />
-        <Appbar.Action icon="calculator" />
+        <Appbar.Action
+          icon="calculator"
+          onPress={() => navigation.navigate('Calculator')}
+        />
       </Appbar.Header>
       <View style={styles.button_container}>
         <View
@@ -94,6 +97,7 @@ let styles = StyleSheet.create({
   un_active_text_color: {
     color: 'black',
   },
+  appbar_color: {backgroundColor: '#93278F'},
 });
 
 export default ExpenseIncomeScreen;
