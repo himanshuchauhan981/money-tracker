@@ -19,13 +19,37 @@ class Calculator extends React.Component {
     };
   }
 
+  handle_parenthesis = (bracket) => {
+    let {number} = this.state;
+    let new_number;
+    let last_char_code = number.charCodeAt(number.length - 1);
+    if (bracket === '(') {
+      if (last_char_code >= 48 && last_char_code <= 57) {
+        new_number = `${number} * (`;
+      } else if (last_char_code >= 42 && last_char_code <= 47) {
+        new_number = `${number} (`;
+      }
+    } else {
+      if (
+        (last_char_code >= 48 && last_char_code <= 57) ||
+        last_char_code === 41
+      ) {
+        new_number = `${number})`;
+      }
+    }
+    return new_number;
+  };
+
   handle_change = (value) => {
     let ascii_code = value.charCodeAt(0);
+
     let {number} = this.state;
     let new_value;
     let temp_result;
-    if (number === '') {
+    if (number === '' && ascii_code === 40) {
       new_value = value;
+    } else if (ascii_code === 40 || ascii_code === 41) {
+      new_value = this.handle_parenthesis(value);
     } else if (ascii_code >= 48 && ascii_code <= 57) {
       let last_char_code = number.charCodeAt(number.length - 1);
       if (last_char_code >= 42 && last_char_code <= 47) {
@@ -71,10 +95,14 @@ class Calculator extends React.Component {
               onPress={this.clear_calculator}>
               <Text style={styles.number_text}>C</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.number_button}>
+            <TouchableOpacity
+              style={styles.number_button}
+              onPress={() => this.handle_change('(')}>
               <Text style={styles.number_text}>(</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.number_button}>
+            <TouchableOpacity
+              style={styles.number_button}
+              onPress={() => this.handle_change(')')}>
               <Text style={styles.number_text}>)</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -205,7 +233,7 @@ let styles = StyleSheet.create({
   },
   result: {
     fontFamily: 'TitilliumWeb',
-    fontSize: normalize_font_size(40),
+    fontSize: normalize_font_size(50),
     color: 'white',
   },
   calculator: {
