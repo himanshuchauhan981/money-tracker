@@ -8,6 +8,7 @@ import {
   Platform,
   PixelRatio,
 } from 'react-native';
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 
 class Calculator extends React.Component {
   constructor() {
@@ -76,8 +77,21 @@ class Calculator extends React.Component {
     } catch (err) {}
   };
 
-  clear_calculator = () => {
+  clear_all_calculator = () => {
     this.setState({final_result: 0, number: '', temp_result: ''});
+  };
+
+  clear_last_digit = () => {
+    let {number} = this.state;
+    let new_number;
+    try {
+      new_number = number.trim().slice(0, -1);
+      console.log(new_number);
+      let temp_result = eval(new_number);
+      this.setState({number: new_number, temp_result: temp_result});
+    } catch (error) {
+      this.setState({number: new_number});
+    }
   };
 
   render() {
@@ -91,8 +105,28 @@ class Calculator extends React.Component {
         <View style={styles.calculator}>
           <View style={styles.row}>
             <TouchableOpacity
+              style={styles.clear_all_button}
+              onPress={this.clear_all_calculator}>
+              <Text style={styles.number_text}>CE</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.number_button, {paddingHorizontal: 26}]}
+              onPress={() => this.handle_change('%')}>
+              <Text style={styles.number_text}>%</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.plus_minus_button]}>
+              <FontAwesome5Icon name="history" size={22} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.handle_change('+/-')}
+              style={[styles.number_button, styles.operator_button]}>
+              <Text style={styles.operator_text}>&plusmn;</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.row}>
+            <TouchableOpacity
               style={styles.number_button}
-              onPress={this.clear_calculator}>
+              onPress={this.clear_last_digit}>
               <Text style={styles.number_text}>C</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -246,8 +280,22 @@ let styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 10,
   },
+  clear_all_button: {
+    paddingHorizontal: 24,
+    paddingVertical: 20,
+    borderRadius: 25,
+    backgroundColor: 'white',
+    elevation: 16,
+  },
   number_button: {
     paddingHorizontal: 30,
+    paddingVertical: 20,
+    borderRadius: 25,
+    backgroundColor: 'white',
+    elevation: 16,
+  },
+  plus_minus_button: {
+    paddingHorizontal: 22,
     paddingVertical: 20,
     borderRadius: 25,
     backgroundColor: 'white',
