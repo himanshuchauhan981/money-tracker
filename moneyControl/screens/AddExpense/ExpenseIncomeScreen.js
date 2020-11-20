@@ -2,15 +2,17 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Appbar} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
+import {connect} from 'react-redux';
 
 import Expense from './Expense';
 
-const ExpenseIncomeScreen = () => {
+const ExpenseIncomeScreen = (props) => {
   let navigation = useNavigation();
   let [button, set_button] = React.useState('expense');
+  let active_button = {borderColor: props.color, backgroundColor: 'white'};
   return (
     <View style={styles.container}>
-      <Appbar.Header style={styles.appbar_color}>
+      <Appbar.Header style={{backgroundColor: props.color}}>
         <Appbar.BackAction onPress={() => navigation.goBack()} />
         <Appbar.Content title="Add" />
         <Appbar.Action
@@ -24,15 +26,13 @@ const ExpenseIncomeScreen = () => {
           style={[
             styles.button,
             {marginRight: 10},
-            button === 'expense'
-              ? styles.active_button
-              : styles.un_active_button,
+            button === 'expense' ? active_button : styles.un_active_button,
           ]}>
           <Text
             style={[
               styles.button_text,
               button === 'expense'
-                ? styles.active_text_color
+                ? {color: props.color}
                 : styles.un_active_text_color,
             ]}>
             Expense
@@ -41,16 +41,14 @@ const ExpenseIncomeScreen = () => {
         <View
           style={[
             styles.button,
-            button === 'income'
-              ? styles.active_button
-              : styles.un_active_button,
+            button === 'income' ? active_button : styles.un_active_button,
           ]}
           onStartShouldSetResponder={() => set_button('income')}>
           <Text
             style={[
               styles.button_text,
               button === 'income'
-                ? styles.active_text_color
+                ? {color: props.color}
                 : styles.un_active_text_color,
             ]}>
             Income
@@ -76,28 +74,25 @@ let styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 8,
     borderWidth: 1.5,
-
     borderRadius: 10,
   },
   button_text: {
     fontFamily: 'Arimo-Bold',
     fontSize: 18,
   },
-  active_button: {
-    borderColor: '#93278f',
-    backgroundColor: 'white',
-  },
   un_active_button: {
     borderColor: '#C0C0C0',
     backgroundColor: '#E2E4E3',
   },
-  active_text_color: {
-    color: '#93278F',
-  },
   un_active_text_color: {
     color: 'black',
   },
-  appbar_color: {backgroundColor: '#93278F'},
 });
 
-export default ExpenseIncomeScreen;
+const mapStateToProps = (state) => {
+  return {
+    color: state.userReducer.category_color,
+  };
+};
+
+export default connect(mapStateToProps)(ExpenseIncomeScreen);

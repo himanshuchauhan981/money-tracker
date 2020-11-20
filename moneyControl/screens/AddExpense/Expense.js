@@ -10,6 +10,8 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
+import * as ActionType from '../../action';
+import {connect} from 'react-redux';
 
 import Calendar from './Calendar';
 import Category from './Category';
@@ -54,8 +56,8 @@ class Expense extends React.Component {
     );
     this.setState({
       selected_category: selected_category[0].name,
-      category_color: selected_category[0].color,
     });
+    this.props.set_category_color(selected_category[0].color);
   };
 
   render() {
@@ -65,19 +67,27 @@ class Expense extends React.Component {
         <TouchableOpacity
           onPress={() => this.handle_calendar_modal(true)}
           style={styles.calendar_container}>
-          <AntDesignIcon name="calendar" size={30} />
+          <AntDesignIcon name="calendar" size={30} color={this.props.color} />
           <Text style={styles.calendar_text}>{this.state.date_text}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => this.handle_category_modal(true)}
           style={styles.category_container}>
-          <MaterialCommunityIcon name="view-list" size={30} />
+          <MaterialCommunityIcon
+            name="view-list"
+            size={30}
+            color={this.props.color}
+          />
           <Text style={styles.category_text}>
             {this.state.selected_category}
           </Text>
         </TouchableOpacity>
         <View style={styles.note_container}>
-          <MaterialCommunityIcon name="note-text-outline" size={30} />
+          <MaterialCommunityIcon
+            name="note-text-outline"
+            size={30}
+            color={this.props.color}
+          />
           <TextInput
             placeholder="Add a note"
             multiline
@@ -86,7 +96,7 @@ class Expense extends React.Component {
           />
         </View>
         <View style={styles.amount_container}>
-          <FontAwesome name="money" size={30} />
+          <FontAwesome name="money" size={30} color={this.props.color} />
           <TextInput
             placeholder="Amount"
             keyboardType="number-pad"
@@ -94,7 +104,8 @@ class Expense extends React.Component {
             style={styles.amount_text_input}
           />
         </View>
-        <TouchableOpacity style={styles.create_button}>
+        <TouchableOpacity
+          style={[styles.create_button, {backgroundColor: this.props.color}]}>
           <Text style={styles.create_button_text}>Create</Text>
         </TouchableOpacity>
         <Calendar
@@ -160,7 +171,6 @@ let styles = StyleSheet.create({
     fontSize: 18,
   },
   create_button: {
-    backgroundColor: '#93278F',
     marginHorizontal: 20,
     paddingVertical: 14,
     paddingHorizontal: 10,
@@ -174,4 +184,21 @@ let styles = StyleSheet.create({
   },
 });
 
-export default Expense;
+const mapStateToProps = (state) => {
+  return {
+    color: state.userReducer.category_color,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    set_category_color: (color) => {
+      dispatch({
+        type: ActionType.SET_CATEGORY_COLOR,
+        color: color,
+      });
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Expense);

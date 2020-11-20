@@ -1,1 +1,1 @@
-export const AUTHENTICATE_USER = 'user_authenticated';
+export const SET_CATEGORY_COLOR = 'set_category_color';

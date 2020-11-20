@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {Overlay} from 'react-native-elements';
 import {Divider} from 'react-native-paper';
+import {connect} from 'react-redux';
 
 import CategoryData from '../../services/CategoryData';
 
@@ -27,7 +28,7 @@ const Category = (props) => {
       onBackdropPress={props.close_modal}
       overlayStyle={styles.overlay}>
       <View>
-        <View style={styles.overlay_header}>
+        <View style={[styles.overlay_header, {backgroundColor: props.color}]}>
           <Text style={styles.overlay_heading}>{props.selected_category}</Text>
         </View>
         <Divider style={styles.divider} />
@@ -50,7 +51,6 @@ let styles = StyleSheet.create({
     padding: 0,
   },
   overlay_header: {
-    backgroundColor: '#93278f',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
   },
@@ -79,4 +79,10 @@ let styles = StyleSheet.create({
   divider: {backgroundColor: 'black'},
 });
 
-export default Category;
+const mapStateToProps = (state) => {
+  return {
+    color: state.userReducer.category_color,
+  };
+};
+
+export default connect(mapStateToProps)(Category);
