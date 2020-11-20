@@ -10,7 +10,7 @@ const ExpenseIncomeScreen = () => {
   let [button, set_button] = React.useState('expense');
   return (
     <View style={styles.container}>
-      <Appbar.Header statusBarHeight={30} style={styles.appbar_color}>
+      <Appbar.Header style={styles.appbar_color}>
         <Appbar.BackAction onPress={() => navigation.goBack()} />
         <Appbar.Content title="Add" />
         <Appbar.Action

@@ -1,5 +1,12 @@
 import React from 'react';
-import {FlatList, StyleSheet, Text, View, Dimensions} from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
 import {Overlay} from 'react-native-elements';
 import {Divider} from 'react-native-paper';
 
@@ -7,10 +14,12 @@ import CategoryData from '../../services/CategoryData';
 
 const Category = (props) => {
   let renderCategoryItem = ({item}) => (
-    <View style={styles.category_box}>
+    <TouchableOpacity
+      style={styles.category_box}
+      onPress={() => props.change_category(item.id)}>
       {item.icon}
       <Text style={styles.icon_heading}>{item.name}</Text>
-    </View>
+    </TouchableOpacity>
   );
   return (
     <Overlay
@@ -19,9 +28,9 @@ const Category = (props) => {
       overlayStyle={styles.overlay}>
       <View>
         <View style={styles.overlay_header}>
-          <Text style={styles.overlay_heading}>Category</Text>
+          <Text style={styles.overlay_heading}>{props.selected_category}</Text>
         </View>
-        <Divider style={{backgroundColor: 'black'}} />
+        <Divider style={styles.divider} />
         <FlatList
           data={CategoryData.expense_category_data}
           keyExtractor={(item) => item.id}
@@ -67,6 +76,7 @@ let styles = StyleSheet.create({
     marginTop: 5,
     color: '#AEB1B6',
   },
+  divider: {backgroundColor: 'black'},
 });
 
 export default Category;

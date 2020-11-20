@@ -28,7 +28,7 @@ const DrawerStack = () => {
 };
 
 const RootStackScreen = () => (
-  <RootStack.Navigator initialRouteName="Calculator">
+  <RootStack.Navigator initialRouteName="Add">
     <RootStack.Screen
       name="Initial"
       component={Initial}
