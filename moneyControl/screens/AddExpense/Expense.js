@@ -54,6 +54,7 @@ class Expense extends React.Component {
     let selected_category = CategoryData.expense_category_data.filter(
       (category) => category.id === id,
     );
+    this.handle_category_modal(false);
     this.setState({
       selected_category: selected_category[0].name,
     });
@@ -175,6 +176,7 @@ let styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 10,
     borderRadius: 14,
+    elevation: 20,
   },
   create_button_text: {
     textAlign: 'center',

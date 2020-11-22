@@ -35,8 +35,8 @@ let expense_category_data = [
   {
     id: '5facf1fcfc13ae4b83600450',
     name: 'Food & Drink',
-    icon: <Ionicon name="fast-food" size={36} color="#27F911" />,
-    color: '#27F911',
+    icon: <Ionicon name="fast-food" size={36} color="#C70039" />,
+    color: '#C70039',
   },
   {
     id: '5facf1fcfc13ae4b83600451',
@@ -47,8 +47,8 @@ let expense_category_data = [
   {
     id: '5facf1fcfc13ae4b83600452',
     name: 'Groceries',
-    icon: <MaterialIcon name="local-grocery-store" size={36} color="#F3F911" />,
-    color: '#F3F911',
+    icon: <MaterialIcon name="local-grocery-store" size={36} color="#581845" />,
+    color: '#581845',
   },
   {
     id: '5facf1fcfc13ae4b83600453',
@@ -65,8 +65,8 @@ let expense_category_data = [
   {
     id: '5facf1fcfc13ae4b83600455',
     name: 'Loans',
-    icon: <MaterialIcon name="attach-money" size={36} color="#40F5AD" />,
-    color: '#40F5AD',
+    icon: <MaterialIcon name="attach-money" size={36} color="#31B681" />,
+    color: '#31B681',
   },
   {
     id: '5facf1fcfc13ae4b83600456',
