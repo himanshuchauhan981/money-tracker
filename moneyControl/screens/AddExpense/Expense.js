@@ -10,12 +10,13 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
-import * as ActionType from '../../action';
 import {connect} from 'react-redux';
 
 import Calendar from './Calendar';
 import Category from './Category';
 import CategoryData from '../../services/CategoryData';
+import AmountPad from './AmountPad';
+import * as ActionType from '../../action';
 
 class Expense extends React.Component {
   constructor() {
@@ -27,6 +28,8 @@ class Expense extends React.Component {
       date_text: 'Today',
       selected_category: 'Category',
       category_color: '',
+      amount: 'Amount',
+      visible_amount_pad: false,
     };
   }
 
@@ -35,6 +38,8 @@ class Expense extends React.Component {
 
   handle_category_modal = (status) =>
     this.setState({visible_category_modal: status});
+
+  handle_amount_pad = (status) => this.setState({visible_amount_pad: status});
 
   handle_change_date = (selected_date) => {
     let current_date = new Date();
@@ -96,15 +101,12 @@ class Expense extends React.Component {
             style={styles.note_text_input}
           />
         </View>
-        <View style={styles.amount_container}>
+        <TouchableOpacity
+          style={styles.amount_container}
+          onPress={() => this.handle_amount_pad(true)}>
           <FontAwesome name="money" size={30} color={this.props.color} />
-          <TextInput
-            placeholder="Amount"
-            keyboardType="number-pad"
-            autoFocus={false}
-            style={styles.amount_text_input}
-          />
-        </View>
+          <Text style={styles.amount_text}>{this.state.amount}</Text>
+        </TouchableOpacity>
         <TouchableOpacity
           style={[styles.create_button, {backgroundColor: this.props.color}]}>
           <Text style={styles.create_button_text}>Create</Text>
@@ -120,6 +122,10 @@ class Expense extends React.Component {
           selected_category={this.state.selected_category}
           close_modal={() => this.handle_category_modal(false)}
           change_category={this.handle_change_category}
+        />
+        <AmountPad
+          visible={this.state.visible_amount_pad}
+          handle_amount_pad={this.handle_amount_pad}
         />
       </View>
     );
@@ -166,11 +172,6 @@ let styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
   },
-  amount_text_input: {
-    width: '100%',
-    marginLeft: 25,
-    fontSize: 18,
-  },
   create_button: {
     marginHorizontal: 20,
     paddingVertical: 14,
@@ -183,6 +184,11 @@ let styles = StyleSheet.create({
     fontSize: 22,
     letterSpacing: 2,
     color: 'white',
+  },
+  amount_text: {
+    fontFamily: 'Arimo-Regular',
+    marginLeft: 25,
+    fontSize: 18,
   },
 });
 

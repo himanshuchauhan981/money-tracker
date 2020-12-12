@@ -10,7 +10,7 @@ import Home from './Home';
 import ForgetPassword from './ForgetPassword/ForgetPassword';
 import ResetPassword from './ForgetPassword/ResetPassword';
 import PasswordSuccess from './ForgetPassword/PasswordSuccess';
-import ExpenIncomeScreen from './AddExpense/ExpenseIncomeScreen';
+import ExpenseIncomeScreen from './AddExpense/ExpenseIncomeScreen';
 import Calculator from './Calculator/Calculator';
 
 const Drawer = createDrawerNavigator();
@@ -66,7 +66,7 @@ const RootStackScreen = () => (
     />
     <RootStack.Screen
       name="Add"
-      component={ExpenIncomeScreen}
+      component={ExpenseIncomeScreen}
       options={{headerShown: false}}
     />
     <RootStack.Screen

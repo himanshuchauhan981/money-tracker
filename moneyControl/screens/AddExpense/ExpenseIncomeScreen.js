@@ -9,10 +9,12 @@ import Expense from './Expense';
 const ExpenseIncomeScreen = (props) => {
   let navigation = useNavigation();
   let [button, set_button] = React.useState('expense');
+
   let active_button = {borderColor: props.color, backgroundColor: 'white'};
+
   return (
     <View style={styles.container}>
-      <Appbar.Header style={{backgroundColor: props.color}}>
+      <Appbar.Header style={{backgroundColor: props.color, marginTop: 30}}>
         <Appbar.BackAction onPress={() => navigation.goBack()} />
         <Appbar.Content title="Add" />
         <Appbar.Action
