@@ -18,6 +18,7 @@ import Category from './Category';
 import CategoryData from '../../services/CategoryData';
 import AmountPad from './AmountPad';
 import * as ActionType from '../../action';
+import Payment from './Payment';
 
 class Expense extends React.Component {
   constructor() {
@@ -25,11 +26,13 @@ class Expense extends React.Component {
     this.state = {
       visible_calendar_modal: false,
       visible_category_modal: false,
+      visible_payment_modal: false,
+      visible_amount_pad: false,
       expense_date: new Date(),
       date_text: 'Today',
       selected_category: 'Category',
       category_color: '',
-      visible_amount_pad: false,
+      payment: 'Payment',
     };
   }
 
@@ -39,7 +42,13 @@ class Expense extends React.Component {
   handle_category_modal = (status) =>
     this.setState({visible_category_modal: status});
 
+  handle_payment_modal = (status) =>
+    this.setState({visible_payment_modal: status});
+
   handle_amount_pad = (status) => this.setState({visible_amount_pad: status});
+
+  change_payment_mode = (mode) =>
+    this.setState({payment: mode, visible_payment_modal: false});
 
   handle_change_date = (selected_date) => {
     let current_date = new Date();
@@ -72,21 +81,27 @@ class Expense extends React.Component {
       <View>
         <TouchableOpacity
           onPress={() => this.handle_calendar_modal(true)}
-          style={styles.calendar_container}>
+          style={styles.expense_item_container}>
           <AntDesignIcon name="calendar" size={30} color={this.props.color} />
-          <Text style={styles.calendar_text}>{this.state.date_text}</Text>
+          <Text style={styles.expense_item_text}>{this.state.date_text}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => this.handle_category_modal(true)}
-          style={styles.category_container}>
+          style={styles.expense_item_container}>
           <MaterialCommunityIcon
             name="view-list"
             size={30}
             color={this.props.color}
           />
-          <Text style={styles.category_text}>
+          <Text style={styles.expense_item_text}>
             {this.state.selected_category}
           </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.expense_item_container}
+          onPress={() => this.handle_payment_modal(true)}>
+          <MaterialIcon name="payment" size={30} color={this.props.color} />
+          <Text style={styles.expense_item_text}>{this.state.payment}</Text>
         </TouchableOpacity>
         <View style={styles.note_container}>
           <MaterialCommunityIcon
@@ -129,30 +144,24 @@ class Expense extends React.Component {
           visible={this.state.visible_amount_pad}
           handle_amount_pad={this.handle_amount_pad}
         />
+        <Payment
+          visible={this.state.visible_payment_modal}
+          handle_payment_modal={this.handle_payment_modal}
+          change_payment_mode={this.change_payment_mode}
+        />
       </View>
     );
   }
 }
 
 let styles = StyleSheet.create({
-  calendar_container: {
+  expense_item_container: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 17,
   },
-  calendar_text: {
-    fontFamily: 'Arimo-Regular',
-    fontSize: 18,
-    marginLeft: 25,
-  },
-  category_container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 17,
-  },
-  category_text: {
+  expense_item_text: {
     fontFamily: 'Arimo-Regular',
     fontSize: 18,
     marginLeft: 25,
