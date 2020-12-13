@@ -9,6 +9,7 @@ import {
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
 import {connect} from 'react-redux';
 
@@ -28,7 +29,6 @@ class Expense extends React.Component {
       date_text: 'Today',
       selected_category: 'Category',
       category_color: '',
-      amount: 'Amount',
       visible_amount_pad: false,
     };
   }
@@ -105,7 +105,9 @@ class Expense extends React.Component {
           style={styles.amount_container}
           onPress={() => this.handle_amount_pad(true)}>
           <FontAwesome name="money" size={30} color={this.props.color} />
-          <Text style={styles.amount_text}>{this.state.amount}</Text>
+          <Text style={styles.amount_text}>
+            {this.props.amount === '' ? 'Amount' : this.props.amount}
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.create_button, {backgroundColor: this.props.color}]}>
@@ -195,6 +197,7 @@ let styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     color: state.userReducer.category_color,
+    amount: state.userReducer.amount,
   };
 };
 
@@ -204,6 +207,12 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: ActionType.SET_CATEGORY_COLOR,
         color: color,
+      });
+    },
+    set_amount: (amount) => {
+      dispatch({
+        type: ActionType.SET_AMOUNT,
+        amount: amount,
       });
     },
   };
