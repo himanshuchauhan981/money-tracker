@@ -4,11 +4,11 @@ import {Appbar} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import {connect} from 'react-redux';
 
-import Expense from './Expense';
+import ScreenFields from './ScreenFields';
+import * as ActionType from '../../action';
 
 const ExpenseIncomeScreen = (props) => {
   let navigation = useNavigation();
-  let [button, set_button] = React.useState('expense');
 
   let active_button = {borderColor: props.color, backgroundColor: 'white'};
 
@@ -24,16 +24,20 @@ const ExpenseIncomeScreen = (props) => {
       </Appbar.Header>
       <View style={styles.button_container}>
         <View
-          onStartShouldSetResponder={() => set_button('expense')}
+          onStartShouldSetResponder={() =>
+            props.set_expense_income_screen('expense')
+          }
           style={[
             styles.button,
             {marginRight: 10},
-            button === 'expense' ? active_button : styles.un_active_button,
+            props.screen === 'expense'
+              ? active_button
+              : styles.un_active_button,
           ]}>
           <Text
             style={[
               styles.button_text,
-              button === 'expense'
+              props.screen === 'expense'
                 ? {color: props.color}
                 : styles.un_active_text_color,
             ]}>
@@ -43,13 +47,15 @@ const ExpenseIncomeScreen = (props) => {
         <View
           style={[
             styles.button,
-            button === 'income' ? active_button : styles.un_active_button,
+            props.screen === 'income' ? active_button : styles.un_active_button,
           ]}
-          onStartShouldSetResponder={() => set_button('income')}>
+          onStartShouldSetResponder={() =>
+            props.set_expense_income_screen('income')
+          }>
           <Text
             style={[
               styles.button_text,
-              button === 'income'
+              props.screen === 'income'
                 ? {color: props.color}
                 : styles.un_active_text_color,
             ]}>
@@ -57,7 +63,7 @@ const ExpenseIncomeScreen = (props) => {
           </Text>
         </View>
       </View>
-      <View>{button === 'expense' ? <Expense /> : <Text>Income</Text>}</View>
+      <View>{<ScreenFields />}</View>
     </View>
   );
 };
@@ -94,7 +100,22 @@ let styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     color: state.userReducer.category_color,
+    screen: state.userReducer.expense_income_screen,
   };
 };
 
-export default connect(mapStateToProps)(ExpenseIncomeScreen);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    set_expense_income_screen: (screen) => {
+      dispatch({
+        type: ActionType.SET_EXPENSE_INCOME_SCREEN,
+        screen,
+      });
+    },
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ExpenseIncomeScreen);

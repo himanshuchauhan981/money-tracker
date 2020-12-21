@@ -15,45 +15,47 @@ const Payment = (props) => {
       isVisible={props.visible}
       onBackdropPress={() => props.handle_payment_modal(false)}
       overlayStyle={styles.payment_overlay}>
-      <View style={[styles.payment_heading, {backgroundColor: props.color}]}>
-        <Text style={styles.heading_text}>Payment method</Text>
-      </View>
-      <List.Item
-        title="Cash"
-        titleStyle={styles.title}
-        onPress={() => props.change_payment_mode('Cash')}
-        left={(props) => (
-          <Icon {...props} name="cash" size={30} style={styles.list_icon} />
-        )}
-      />
-      <List.Accordion
-        title="Card"
-        expanded={expanded_card}
-        onPress={() => set_expanded_card(!expanded_card)}
-        titleStyle={styles.title}
-        left={(props) => (
-          <Icon
-            {...props}
-            name="credit-card"
-            size={30}
-            style={styles.list_icon}
+      <View>
+        <View style={[styles.payment_heading, {backgroundColor: props.color}]}>
+          <Text style={styles.heading_text}>Payment method</Text>
+        </View>
+        <List.Item
+          title="Cash"
+          titleStyle={styles.title}
+          onPress={() => props.change_payment_mode('Cash')}
+          left={(props) => (
+            <Icon {...props} name="cash" size={30} style={styles.list_icon} />
+          )}
+        />
+        <List.Accordion
+          title="Card"
+          expanded={expanded_card}
+          onPress={() => set_expanded_card(!expanded_card)}
+          titleStyle={styles.title}
+          left={(props) => (
+            <Icon
+              {...props}
+              name="credit-card"
+              size={30}
+              style={styles.list_icon}
+            />
+          )}>
+          <List.Item
+            title="Credit card"
+            onPress={() => props.change_payment_mode('Credit')}
+            left={(props) => (
+              <Icon name="chevron-right" size={30} style={styles.list_icon} />
+            )}
           />
-        )}>
-        <List.Item
-          title="Credit card"
-          onPress={() => props.change_payment_mode('Credit')}
-          left={(props) => (
-            <Icon name="chevron-right" size={30} style={styles.list_icon} />
-          )}
-        />
-        <List.Item
-          title="Debit card"
-          onPress={() => props.change_payment_mode('Debit')}
-          left={(props) => (
-            <Icon name="chevron-right" size={30} style={styles.list_icon} />
-          )}
-        />
-      </List.Accordion>
+          <List.Item
+            title="Debit card"
+            onPress={() => props.change_payment_mode('Debit')}
+            left={(props) => (
+              <Icon name="chevron-right" size={30} style={styles.list_icon} />
+            )}
+          />
+        </List.Accordion>
+      </View>
     </Overlay>
   );
 };

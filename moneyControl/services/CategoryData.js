@@ -7,6 +7,43 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import EnTypoIcon from 'react-native-vector-icons/Entypo';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
+let income_category_data = [
+  {
+    id: '5fb249a178ba7d1f1c891644',
+    name: 'Salary',
+    icon: <FontAwesome5Icon name="money-bill-alt" size={36} color="#E9562F" />,
+    color: '#E9562F',
+  },
+  {
+    id: '5fb249a178ba7d1f1c891645',
+    name: 'Business',
+    icon: <Ionicon name="business" size={36} color="#F9BD11" />,
+    color: '#F9BD11',
+  },
+  {
+    id: '5fb249a178ba7d1f1c891646',
+    name: 'Loan',
+  },
+  {
+    id: '5fb249a178ba7d1f1c891647',
+    name: 'Insurance',
+    icon: <EnTypoIcon name="shield" size={36} color="#581845" />,
+    color: '#581845',
+  },
+  {
+    id: '5fb249a178ba7d1f1c891648',
+    name: 'Rents',
+    icon: <MaterialIcon name="house" size={36} color="#C70039" />,
+    color: '#C70039',
+  },
+  {
+    id: '5fb249a178ba7d1f1c891650',
+    name: 'Other',
+    icon: <EnTypoIcon name="dots-three-horizontal" color="#5CAB5D" />,
+    color: '#5CAB5D',
+  },
+];
+
 let expense_category_data = [
   {
     id: '5facf1fcfc13ae4b8360044c',
@@ -84,4 +121,4 @@ let expense_category_data = [
   },
 ];
 
-module.exports = {expense_category_data};
+module.exports = {expense_category_data, income_category_data};

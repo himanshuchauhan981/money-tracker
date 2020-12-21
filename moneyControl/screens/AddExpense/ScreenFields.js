@@ -20,7 +20,7 @@ import AmountPad from './AmountPad';
 import * as ActionType from '../../action';
 import Payment from './Payment';
 
-class Expense extends React.Component {
+class ScreenFields extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -139,6 +139,7 @@ class Expense extends React.Component {
           selected_category={this.state.selected_category}
           close_modal={() => this.handle_category_modal(false)}
           change_category={this.handle_change_category}
+          screen="expense"
         />
         <AmountPad
           visible={this.state.visible_amount_pad}
@@ -207,6 +208,7 @@ const mapStateToProps = (state) => {
   return {
     color: state.userReducer.category_color,
     amount: state.userReducer.amount,
+    screen: state.userReducer.expense_income_screen,
   };
 };
 
@@ -227,4 +229,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Expense);
+export default connect(mapStateToProps, mapDispatchToProps)(ScreenFields);

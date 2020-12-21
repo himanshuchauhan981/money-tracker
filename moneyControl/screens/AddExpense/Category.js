@@ -33,7 +33,11 @@ const Category = (props) => {
         </View>
         <Divider style={styles.divider} />
         <FlatList
-          data={CategoryData.expense_category_data}
+          data={
+            props.screen === 'expense'
+              ? CategoryData.expense_category_data
+              : CategoryData.income_category_data
+          }
           keyExtractor={(item) => item.id}
           numColumns={3}
           renderItem={renderCategoryItem}
@@ -82,6 +86,7 @@ let styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     color: state.userReducer.category_color,
+    screen: state.userReducer.expense_income_screen,
   };
 };
 

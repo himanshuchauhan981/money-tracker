@@ -1,6 +1,7 @@
 const initialState = {
   category_color: '#93278F',
   amount: '',
+  expense_income_screen: 'expense',
 };
 
 const userReducer = (state = initialState, action) => {
@@ -13,6 +14,11 @@ const userReducer = (state = initialState, action) => {
     return {
       ...state,
       amount: action.amount,
+    };
+  } else if (action.type === 'set_expense_income_screen') {
+    return {
+      ...state,
+      expense_income_screen: action.screen,
     };
   }
   return state;
